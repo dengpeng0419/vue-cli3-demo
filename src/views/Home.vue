@@ -7,12 +7,25 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HelloWorld from '@/components/HelloWorld.vue';
+import axios from "axios";
 
 export default {
   name: 'home',
   components: {
     HelloWorld
+  },
+  mounted() {
+    console.log(1)
+    this.getHomeData();
+  },
+  methods: {
+    getHomeData() {
+      axios.post("/purchase/init").then(res => {
+        console.log(res.data);
+        // ...
+      });
+    }
   }
 }
 </script>
