@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <div class='text'>it is me</div>
     <img alt="Vue logo" src="../assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
@@ -29,3 +30,14 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .home {
+    .text {
+      font-size: 20px;
+      display: flex;
+      color: green;
+      justify-content: center;
+    }
+  }
+</style>
