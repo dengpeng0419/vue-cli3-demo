@@ -1,7 +1,29 @@
 //const mockIndexData = require("./mock/index.json");
 var mock = require('./mockData')
+// 引入nodejs的路径模块
+var path = require('path')
+var ZipPlugin = require('zip-webpack-plugin')
+var packageData = require('./package')
  
 module.exports = {
+  publicPath: process.env.VUE_APP_STATIC,
+  productionSourceMap: true,  // 生产环境下css 分离文件
+  configureWebpack: (config) => {
+    const pluginsBase = [
+      
+    ]
+    const pluginsPro = [
+      new ZipPlugin({
+        path: path.join(__dirname,'./dist'),
+        pathPrefix: `${packageData.name}`,
+        filename: `${packageData.name}.zip`
+      })
+    ]
+    if(process.env.NODE_ENV === 'production') {
+      config.plugins = [...config.plugins, ...pluginsPro]
+    }
+    config.plugins = [...config.plugins, ...pluginsBase]
+  },
   //...  
   devServer: {
     port: 8081,

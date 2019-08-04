@@ -3,10 +3,12 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 
 Vue.use(Router)
+// const path = process.env.NODE_ENV === 'production' ? 'vue-cli/' : '/'
 
 export default new Router({
   mode: 'history',
-  base: process.env.BASE_URL,
+  //base: process.env.BASE_URL,
+  base: process.env.VUE_APP_ROUTE_PATH,
   routes: [
     {
       path: '/',

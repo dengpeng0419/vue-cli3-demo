@@ -17,7 +17,6 @@ export default {
     HelloWorld
   },
   mounted() {
-    console.log(1)
     this.getHomeData();
   },
   methods: {
