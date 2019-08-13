@@ -1,20 +1,18 @@
 <template>
   <div class="home">
-    <div class='text'>it is me</div>
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class='text'>首页</div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
 import axios from "axios";
 
 export default {
   name: 'home',
-  components: {
-    HelloWorld
+  data() {
+    return {
+    }
   },
   mounted() {
     this.getHomeData();
@@ -33,9 +31,11 @@ export default {
 <style lang="scss">
   .home {
     .text {
-      font-size: 20px;
+      margin-top: 200px;
+      margin-left: 100px;
+      font-size: 60px;
       display: flex;
-      color: green;
+      color: #fff;
       justify-content: center;
     }
   }

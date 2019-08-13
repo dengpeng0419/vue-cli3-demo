@@ -1,60 +1,620 @@
 var MockJS = require('mockjs');
 
 var MockData = {
+  // 排行
+  '/app/HumanResource/employee/rank': {
+        "msg": "请求成功",
+        "code": "0",
+        "data": {
+            "huamResourceRank": [
+                {
+                    "id": 11,
+                    "name": "国网新疆电力有限公司经济技术研究院",
+                    "value": 1324
+                },
+                {
+                    "id": 10,
+                    "name": "国网新疆电力有限公司本部",
+                    "value": 123
+                }
+            ]
+        },
+        "recordsFiltered": 0
+  },
+  // 用工趋势
+  '/app/HumanResource/employee/trend': {
+    "msg": "请求成功",
+    "code": "0",
+    "data": {
+        "companyEmployeeTrendList": [
+            {
+                "label": "本部",
+                "content": [
+                    {
+                        "id": 4237,
+                        "year": 2018,
+                        "month": 11,
+                        "employeeCount": 1
+                    },
+                    {
+                        "id": 8368,
+                        "year": 2018,
+                        "month": 12,
+                        "employeeCount": 2
+                    },
+                    {
+                        "id": 6081,
+                        "year": 2019,
+                        "month": 1,
+                        "employeeCount": 3
+                    },
+                    {
+                        "id": 7696,
+                        "year": 2019,
+                        "month": 2,
+                        "employeeCount": 1
+                    },
+                    {
+                        "id": 234,
+                        "year": 2019,
+                        "month": 3,
+                        "employeeCount": 3
+                    },
+                    {
+                        "id": 8086,
+                        "year": 2019,
+                        "month": 4,
+                        "employeeCount": 2
+                    },
+                    {
+                        "id": 9729,
+                        "year": 2019,
+                        "month": 5,
+                        "employeeCount": 3
+                    },
+                    {
+                        "id": 4385,
+                        "year": 2019,
+                        "month": 6,
+                        "employeeCount": 6
+                    },
+                    {
+                        "id": 2535,
+                        "year": 2019,
+                        "month": 7,
+                        "employeeCount": 4
+                    }
+                ]
+            },
+            {
+              "label": "本部",
+              "content": [
+                  {
+                      "id": 4237,
+                      "year": 2018,
+                      "month": 11,
+                      "employeeCount": 10
+                  },
+                  {
+                      "id": 8368,
+                      "year": 2018,
+                      "month": 12,
+                      "employeeCount": 20
+                  },
+                  {
+                      "id": 6081,
+                      "year": 2019,
+                      "month": 1,
+                      "employeeCount": 30
+                  },
+                  {
+                      "id": 7696,
+                      "year": 2019,
+                      "month": 2,
+                      "employeeCount": 10
+                  },
+                  {
+                      "id": 234,
+                      "year": 2019,
+                      "month": 3,
+                      "employeeCount": 30
+                  },
+                  {
+                      "id": 8086,
+                      "year": 2019,
+                      "month": 4,
+                      "employeeCount": 20
+                  },
+                  {
+                      "id": 9729,
+                      "year": 2019,
+                      "month": 5,
+                      "employeeCount": 30
+                  },
+                  {
+                      "id": 4385,
+                      "year": 2019,
+                      "month": 6,
+                      "employeeCount": 60
+                  },
+                  {
+                      "id": 2535,
+                      "year": 2019,
+                      "month": 7,
+                      "employeeCount": 40
+                  }
+              ]
+          },
+          {
+            "label": "本部",
+            "content": [
+                {
+                    "id": 4237,
+                    "year": 2018,
+                    "month": 11,
+                    "employeeCount": 11
+                },
+                {
+                    "id": 8368,
+                    "year": 2018,
+                    "month": 12,
+                    "employeeCount": 12
+                },
+                {
+                    "id": 6081,
+                    "year": 2019,
+                    "month": 1,
+                    "employeeCount": 13
+                },
+                {
+                    "id": 7696,
+                    "year": 2019,
+                    "month": 2,
+                    "employeeCount": 11
+                },
+                {
+                    "id": 234,
+                    "year": 2019,
+                    "month": 3,
+                    "employeeCount": 13
+                },
+                {
+                    "id": 8086,
+                    "year": 2019,
+                    "month": 4,
+                    "employeeCount": 12
+                },
+                {
+                    "id": 9729,
+                    "year": 2019,
+                    "month": 5,
+                    "employeeCount": 13
+                },
+                {
+                    "id": 4385,
+                    "year": 2019,
+                    "month": 6,
+                    "employeeCount": 16
+                },
+                {
+                    "id": 2535,
+                    "year": 2019,
+                    "month": 7,
+                    "employeeCount": 14
+                }
+            ]
+        },
+        {
+          "label": "本部",
+          "content": [
+              {
+                  "id": 4237,
+                  "year": 2018,
+                  "month": 11,
+                  "employeeCount": 12
+              },
+              {
+                  "id": 8368,
+                  "year": 2018,
+                  "month": 12,
+                  "employeeCount": 22
+              },
+              {
+                  "id": 6081,
+                  "year": 2019,
+                  "month": 1,
+                  "employeeCount": 32
+              },
+              {
+                  "id": 7696,
+                  "year": 2019,
+                  "month": 2,
+                  "employeeCount": 21
+              },
+              {
+                  "id": 234,
+                  "year": 2019,
+                  "month": 3,
+                  "employeeCount": 23
+              },
+              {
+                  "id": 8086,
+                  "year": 2019,
+                  "month": 4,
+                  "employeeCount": 22
+              },
+              {
+                  "id": 9729,
+                  "year": 2019,
+                  "month": 5,
+                  "employeeCount": 23
+              },
+              {
+                  "id": 4385,
+                  "year": 2019,
+                  "month": 6,
+                  "employeeCount": 26
+              },
+              {
+                  "id": 2535,
+                  "year": 2019,
+                  "month": 7,
+                  "employeeCount": 24
+              }
+          ]
+        }
+      ]
+    },
+    "recordsFiltered": 0
+  },
+  // 用工数量详情
+  '/app/HumanResource/employee/structure': {
+    "msg": "请求成功",
+    "code": "0",
+    "data": {
+        "pieChartList": [
+            {
+                "label": "年龄",
+                "content": [
+                    {
+                        "label": "29岁及以下",
+                        "value": 0
+                    },
+                    {
+                        "label": "30-34岁",
+                        "value": 0
+                    },
+                    {
+                        "label": "35-39岁",
+                        "value": 0
+                    },
+                    {
+                        "label": "40-44岁",
+                        "value": 0
+                    },
+                    {
+                        "label": "45-49岁",
+                        "value": 0
+                    },
+                    {
+                        "label": "50-54岁",
+                        "value": 0
+                    },
+                    {
+                        "label": "55岁及以上",
+                        "value": 0
+                    }
+                ]
+            },
+            {
+                "label": "文化程度",
+                "content": [
+                    {
+                        "label": "研究生",
+                        "value": 0
+                    },
+                    {
+                        "label": "大学本科",
+                        "value": 0
+                    },
+                    {
+                        "label": "大学专科",
+                        "value": 0
+                    },
+                    {
+                        "label": "中等职业教育",
+                        "value": 0
+                    },
+                    {
+                        "label": "高中",
+                        "value": 0
+                    },
+                    {
+                        "label": "初中及以下",
+                        "value": 0
+                    }
+                ]
+            },
+            {
+                "label": "现有专家人才",
+                "content": [
+                    {
+                        "label": "国家级",
+                        "value": 0
+                    },
+                    {
+                        "label": "国家电网公司级",
+                        "value": 0
+                    },
+                    {
+                        "label": "省级",
+                        "value": 0
+                    },
+                    {
+                        "label": "地市级",
+                        "value": 0
+                    }
+                ]
+            },
+            {
+                "label": "专业技术资格等级",
+                "content": [
+                    {
+                        "label": "高级",
+                        "value": 0
+                    },
+                    {
+                        "label": "中级",
+                        "value": 0
+                    },
+                    {
+                        "label": "初级",
+                        "value": 0
+                    },
+                    {
+                        "label": "无专业技术资格",
+                        "value": 0
+                    }
+                ]
+            },
+            {
+                "label": "技能等级",
+                "content": [
+                    {
+                        "label": "高级技师",
+                        "value": 0
+                    },
+                    {
+                        "label": "技师",
+                        "value": 0
+                    },
+                    {
+                        "label": "高级工",
+                        "value": 0
+                    },
+                    {
+                        "label": "中级工",
+                        "value": 0
+                    },
+                    {
+                        "label": "初级工",
+                        "value": 0
+                    }
+                ]
+            },
+            {
+                "label": "用工类型",
+                "content": [
+                    {
+                        "label": "职工",
+                        "value": 0
+                    },
+                    {
+                        "label": "短期合同职工",
+                        "value": 0
+                    },
+                    {
+                        "label": "支援集体职工",
+                        "value": 0
+                    },
+                    {
+                        "label": "劳务派遣用工",
+                        "value": 0
+                    },
+                    {
+                        "label": "农电用工",
+                        "value": 0
+                    },
+                    {
+                        "label": "非全日制用工",
+                        "value": 0
+                    },
+                    {
+                        "label": "其他从业人员",
+                        "value": 0
+                    }
+                ]
+            }
+        ]
+    },
+    "recordsFiltered": 0
+  },
   // 首页
-  '/transfer1/init': {
-    'resultCode': 0,
-    'resultMsg': '',
-    'resultData': {
-      'position': {
-        'investAmount|10000-100000.2': 1,
-        'latestIncome|10-100.2': 1
-      },
-      'banner': {
-        'pool|1-3': [{
-          'linkUrl': 'https://qianbao.jd.com/p/page/RNdK4366a0ca.htm',
-          'h5ImageUrl': '@image("750x170", "#894FC4", "#FFF")',
-        }]
-      },
-      "notice": {
-        'icon': '',
-        'canClose': '0',
-        'contents|2-5': [{
-          'name': '天府银行年化6.18%半年期理财限量抢！',
-          'value': '//m.jd.com'
-        }]
-      },
-      'channelList|10-19': [{
-        'channelName|1': ['招商银行', '建设银行', '工商银行', '交通银行', '中国银行', '包商银行', '天府银行', '浦发银行'],
-        'channelIcon': function () {
-          return 'https://bankplus.jd.com/m-life/plaFinancingtran/static/img/bank/' + this.channelId + '.png'
-        },
-        'channelId|1': ['spdb', 'tfb', 'cmbc', 'bsb', 'bol', 'bon', 'nbcb', 'jnrc', 'cqfm', 'cjccb', 'bob', 'qlb', 'bodl'],
-        'channelJdPin|+1': 1,
-        'expertUid|+1': 1
-      }],
-      'productList|1-3': [{
-        'interestRate_temp|1-8.2': 1,
-        'channelId|1': ['tfb', 'spdb', 'bsb'],
-        'productType|1': [0, 1],
-        'productId|1-100': 1,
-        'interestRate': function () {
-          return this.interestRate_temp + '%';
-        },
-        'jumpVersion|0-1': 0,
-        'productText': '财富走向 100天',
-        'duration': '120天',
-        'status|1': ['0', '1', '2', '3'],
-        'tips|0-1': ['新手专享'],
-        'channelName|1': ['招商银行', '建设银行', '工商银行', '交通银行', '中国银行', '包商银行', '天府银行', '浦发银行'],
-        'minInvestAmount|1-10': 1
-      }]
-    }
+  '/app/HumanResource/employee/overview': {
+    "msg": "请求成功",
+    "code": "0",
+    "data": {
+        "employeeIncreaseTotal": 11234,
+        "employeeProductivityAll": 1324,
+        "employeeTalentEquivalentDensity": 1234,
+        "employeeCountTrend": [
+            {
+                "id": 1,
+                "year": 2019,
+                "month": 7,
+                "employeeCount": 132414
+            },
+            {
+                "id": 2,
+                "year": 2019,
+                "month": 6,
+                "employeeCount": 234234
+            },
+            {
+                "id": 3,
+                "year": 2019,
+                "month": 5,
+                "employeeCount": 234
+            },
+            {
+                "id": 4,
+                "year": 2019,
+                "month": 4,
+                "employeeCount": 23424
+            },
+            {
+                "id": 5,
+                "year": 2019,
+                "month": 3,
+                "employeeCount": 234234
+            },
+            {
+                "id": 6,
+                "year": 2019,
+                "month": 2,
+                "employeeCount": 24234
+            },
+            {
+                "id": 7,
+                "year": 2019,
+                "month": 1,
+                "employeeCount": 234234
+            },
+            {
+                "id": 8,
+                "year": 2018,
+                "month": 12,
+                "employeeCount": 23423
+            },
+            {
+                "id": 9,
+                "year": 2018,
+                "month": 11,
+                "employeeCount": 234243
+            }
+        ],
+        "employeeProductivityTrend": [
+            {
+                "id": 1,
+                "year": 2019,
+                "month": 7,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 1341
+            },
+            {
+                "id": 2,
+                "year": 2019,
+                "month": 6,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 1349
+            },
+            {
+                "id": 3,
+                "year": 2019,
+                "month": 5,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 1301
+            },
+            {
+                "id": 4,
+                "year": 2019,
+                "month": 4,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 1341
+            },
+            {
+                "id": 5,
+                "year": 2019,
+                "month": 3,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 1301
+            },
+            {
+                "id": 6,
+                "year": 2019,
+                "month": 2,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 141
+            },
+            {
+                "id": 7,
+                "year": 2019,
+                "month": 1,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 1941
+            },
+            {
+                "id": 8,
+                "year": 2018,
+                "month": 12,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 1141
+            },
+            {
+                "id": 9,
+                "year": 2018,
+                "month": 11,
+                "employeeProductivityAll": 1324,
+                "employeeProductivityStaff": 134,
+                "employeeProductivityStaffOnPost": 841
+            }
+        ],
+        "employeeProductivityStaffOnPost": 134123,
+        "employeeHighSkilledPercentage": 1234,
+        "employeeCount": 132414,
+        "employeeProductivityStaff": 134,
+        "employeeDecreaseTotal": 134,
+        "employeeStructure": [
+            {
+                "label": "研究生及以上",
+                "value": 134
+            },
+            {
+                "label": "大学本科",
+                "value": 134
+            },
+            {
+                "label": "大学专科",
+                "value": 134
+            },
+            {
+                "label": "中等职业教育",
+                "value": 134
+            },
+            {
+                "label": "高中",
+                "value": 1234
+            },
+            {
+                "label": "初中及以下",
+                "value": 1234
+            }
+        ]
+    },
+    "recordsFiltered": 0
   },
   '/purchase/init':{
-    "resultCode": 0,
+    "code": 0,
     "resultMsg": "success",
-    "resultData": {
+    "data": {
       "channelName": "湖南三湘银行",
       "productName": "金慧存1号",
       "productRate": {
