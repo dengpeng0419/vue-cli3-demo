@@ -62,14 +62,21 @@ export default {
     }
   },
   mounted() {
-    this.getPageData();
+    this.getPageData1();
+    this.getPageData2();
+    this.getPageData3();
   },
   methods: {
-    getPageData() {
+    getPageData1() {
       this.$ajax({
-        url: '/app/HumanResource/employee/trend',
+        url: '/app/HumanResource/employee/productivityAllTrend',
         data: {
-          deviceId: '1111'
+          deviceId: "1111",
+          startYear: 2018,
+          startMonth: 11,
+          endYear: 2019,
+          endMonth: 7,
+          companyIdList: [1, 2, 3, 4]
         }
       }).then(res => {
         const list = res.data.companyEmployeeTrendList || [];
@@ -174,6 +181,8 @@ export default {
         }
       })
     }
+
+
   }
 }
 </script>

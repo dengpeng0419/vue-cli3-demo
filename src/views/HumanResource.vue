@@ -26,6 +26,7 @@
     </div>
     <div class="bottom-frame">
       <div class="left-frame">
+        <!-- <router-link class="chart-jump"></router-link> -->
         <v-chart class="chart-employee" :options="option"></v-chart>
         <div class="left-bottom-frame">
           <router-link to="/all-ranking" class="rect-bg">
@@ -46,7 +47,7 @@
         </div>
       </div>
       <div class="right-frame">
-        <div class="employee-number-frame" @click="toEmployeeNumber">
+        <div class="employee-number-frame">
           <v-chart class="chart-productive" :options="polar"></v-chart>
         </div>
         <v-chart class="chart-structure" :options="structure"></v-chart>
@@ -142,7 +143,7 @@ export default {
         let employee = [];
         let employee_x = [];
         res.data.employeeCountTrend.map((item) => {
-          employee.push(item.employeeCount)
+          employee.push(item.value)
           employee_x.push(item.month + '月');
         })
         let employee_structure = [];
@@ -224,7 +225,7 @@ export default {
           },
           grid: {
             x: 60,
-            width: '78%'
+            width: '75%'
           },
           series: [{
             name: '销量',
@@ -342,6 +343,8 @@ export default {
             }
           }],
           yAxis: [{
+            min: 12000,
+            max: 35000,
             axisLine: {
               show: false,
               lineStyle: {
@@ -441,6 +444,16 @@ export default {
       display: flex;
       .left-frame {
         margin-top: 25px;
+        position: relative;
+        .chart-jump {
+          position: absolute;
+          top: 0;
+          left: 20px;
+          width: 400px;
+          height: 100px;
+          background: rgba(0,0,0,0);
+          z-index: 10;
+        }
         .chart-employee {
           box-sizing: border-box;
           padding-top: 25px;

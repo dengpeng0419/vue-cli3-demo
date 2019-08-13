@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <div class="logo">
+      <img src="../assets/img/logo.png" width="251" height="89">
+    </div>
     <div id="nav">
       <router-link tag="div" to="/" class="left-nav">首页</router-link>
       <router-link tag="div" to="/target" class="left-nav">经营指标</router-link>
@@ -32,6 +35,13 @@
   background-repeat: no-repeat;
   background-color: #192031;
   display: flex;
+}
+.logo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-top: 50px;
+  margin-left: 70px;
 }
 #nav {
   display: flex;

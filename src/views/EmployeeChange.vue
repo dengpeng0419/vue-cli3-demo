@@ -5,17 +5,17 @@
         <img src="../assets/img/icon_back.png" width="21" height="36">
       </div>
       <div class="title">职工新增、减少</div>
-      <el-select class="company-choose" v-model="value" placeholder="按公司筛选">
+      <el-select class="company-choose" @change="chooseCompany(companyValue)" v-model="companyValue" placeholder="按公司筛选">
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in companyOptions"
+          :key="item.id"
+          :label="item.alias"
+          :value="item.id">
         </el-option>
       </el-select>
-      <el-select class="time-choose" v-model="value" placeholder="按时间筛选">
+      <el-select class="time-choose" @change="chooseTime(timeValue)" v-model="timeValue" placeholder="按时间筛选">
         <el-option
-          v-for="item in options"
+          v-for="item in timeOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
@@ -32,9 +32,7 @@
         <div class="chart-frame-top"></div>
       </div>
     </div>
-    <div class="trend-line">
-      <v-chart class="trend-chart" :options="trendOption"></v-chart>
-    </div>
+    <v-chart class="trend-charts" :options="trendOption"></v-chart>
   </div>
 </template>
 
@@ -43,37 +41,147 @@ export default {
   name: 'employeeChange',
   data() {
     return {
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
+      timeOptions: [{
+        value: '7',
+        label: '2019年7月'
       }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
+        value: '6',
+        label: '2019年6月'
       }],
-      value: '',
+      timeValue: '7',
+      companyOptions: [],
+      companyValue: '本部',
       ageOption: {},
       wenhuaOption: {},
       trendOption: {}
     }
   },
   mounted() {
+    this.companyOptions = JSON.parse(sessionStorage.getItem('company'));
     this.getPageData();
+    this.getTrendData();
   },
   methods: {
+    chooseTime(timeValue) {
+      this.timeValue = timeValue;
+      this.getPageData();
+    },
+    chooseCompany(companyValue) {
+      this.companyValue = companyValue;
+      this.getPageData();
+    },
+    getTrendData() {
+      this.$ajax({
+        url: '/app/HumanResource/employee/increaseAndDecrease/trend',
+        data: {
+          deviceId: "1111",
+          startYear: 2018,
+          startMonth: 11,
+          endYear: 2019,
+          endMonth: 7,
+          companyId: 0 
+        }
+      }).then(res => {
+        // const line1 = [400, 300, 250, 280, 380, 420, 300];
+        // const line2 = [150, 280, 230, 180, 400, 450, 320];
+        const muti_employee1 = [400, 300, 250, 280, 380, 420, 300, 320];
+        const muti_employee2 = [150, 280, 230, 180, 400, 450, 320, 280];
+        const muti_employee_x = ['1月','2月','3月','4月','5月','6月','7月'];
+        // line1.map((item) => {
+        //     muti_employee1.push(item.value);
+        //     muti_employee_x.push(item.month + '月');
+        // });
+        // line2.map((item) => {
+        //   muti_employee1.push(item.value);
+        // });
+        this.trendOption = {
+          tooltip: {
+            trigger: 'axis',
+            textStyle: {
+              align: 'left'
+            }
+          },
+          legend: {
+            orient: 'horizontal',
+            padding: 1,
+            data: ['新增职工数', '减少职工数']
+          },
+          // grid: {
+          //   width: '90%'
+          // },
+          calculable : true,
+          xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            data: muti_employee_x,
+            axisLine: {
+              lineStyle: {
+                color: '#bdd6ef'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#77bde1',
+                fontSize: 12
+              }
+            }
+          }],
+          yAxis: [{
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: '#bdd6ef'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              lineStyle: {
+                color: '#50586c'
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#77bde1',
+                fontSize: 12
+              }
+            }
+          }],
+          series: [
+            {
+              name:'职工新增',
+              type:'line',
+              data: muti_employee1,
+              itemStyle: {
+                color: '#efea3d',
+                borderColor: '#efea3d'
+              },
+            },
+            {
+              name:'职工减少',
+              type:'line',
+              data: muti_employee2,
+              itemStyle: {
+                color: '#efea3d',
+                borderColor: '#efea3d'
+              },
+            }
+          ]
+        }
+      });
+    },
     getPageData() {
       this.$ajax({
-        url: '/app/HumanResource/employee/structure',
+        url: '/app/HumanResource/employee/increaseAndDecrease/structure',
         data: {
-          deviceId: '1111'
+          deviceId: '1111',
+          year: 2019,
+          month: 7,
+          companyId: 0
         }
       }).then(res => {
         const list = res.data.pieChartList || [];
@@ -101,15 +209,6 @@ export default {
           pie_wenhua.push(obj);
           pie_wenhua_x.push(item.label);
         })
-
-        let muti_employee1 = [];
-        let muti_employee2 = [];
-        let muti_employee_x = [];
-        // res.data.employeeProductivityTrend.map((item) => {
-        //   muti_employee1.push(item.employeeProductivityAll);
-        //   muti_employee2.push(item.employeeProductivityStaff);
-        //   muti_employee_x.push(item.month + '月');
-        // })
 
         this.ageOption = {
           tooltip: {
@@ -220,79 +319,6 @@ export default {
             }
           }]
         }
-
-        this.trendOption = {
-          tooltip: {
-            trigger: 'axis',
-            textStyle: {
-              align: 'left'
-            }
-          },
-          grid: {
-            width: '85%'
-          },
-          xAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            data: muti_employee_x,
-            axisLine: {
-              lineStyle: {
-                color: '#bdd6ef'
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            axisLabel: {
-              textStyle: {
-                color: '#77bde1',
-                fontSize: 12
-              }
-            }
-          }],
-          yAxis: [{
-            axisLine: {
-              show: false,
-              lineStyle: {
-                color: '#bdd6ef'
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            splitLine: {
-              lineStyle: {
-                color: '#50586c'
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: '#77bde1',
-                fontSize: 12
-              }
-            }
-          }],
-          series: [
-            {
-              name:'职工新增',
-              type:'line',
-              data: muti_employee1,
-              itemStyle: {
-                color: '#efea3d',
-                borderColor: '#efea3d'
-              },
-            },
-            {
-              name:'职工减少',
-              type:'line',
-              data: muti_employee2,
-              itemStyle: {
-                color: '#efea3d',
-                borderColor: '#efea3d'
-              },
-            }
-          ]
-        }
       });
     }
   }
@@ -373,6 +399,17 @@ export default {
           border-radius: 20px;
         }
       }
+    }
+    .trend-charts {
+      margin-top: 400px;
+      margin-left: 100px;
+      width: 2400px;
+      height: 800px;
+    }
+    .trend-line {
+      margin-top: 100px;
+      width: 1000px;
+      height: 800px;
     }
     .el-input__inner {
       background-color: #2b516c;
