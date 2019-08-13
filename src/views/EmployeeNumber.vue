@@ -5,25 +5,25 @@
         <img src="../assets/img/icon_back.png" width="21" height="36">
       </div>
       <div class="title">用工数量详情</div>
-      <el-select class="structure-choose" v-model="value" placeholder="用工结构">
+      <el-select class="structure-choose" @change="chooseType(typeValue)" v-model="typeValue" placeholder="用工结构">
         <el-option
-          v-for="item in options"
+          v-for="item in typeOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
-      <el-select class="company-choose" v-model="value" placeholder="按公司筛选">
+      <el-select class="company-choose" @change="chooseCompany(companyValue)" v-model="companyValue" placeholder="按公司筛选">
         <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in companyOptions"
+          :key="item.id"
+          :label="item.alias"
+          :value="item.id">
         </el-option>
       </el-select>
-      <el-select class="time-choose" v-model="value" placeholder="按时间筛选">
+      <el-select class="time-choose" @change="chooseTime(timeValue)" v-model="timeValue" placeholder="按时间筛选">
         <el-option
-          v-for="item in options"
+          v-for="item in timeOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
@@ -58,23 +58,24 @@ export default {
   name: 'home',
   data() {
     return {
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
+      typeOptions: [{
+        value: '1',
+        label: '用工数量'
       }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
+        value: '2',
+        label: '用工模式'
       }],
-      value: '',
+      typeValue: '用工数量',
+      timeOptions: [{
+        value: '7',
+        label: '2019年7月'
+      }, {
+        value: '6',
+        label: '2019年6月'
+      }],
+      timeValue: '7',
+      companyOptions: [],
+      companyValue: '本部',
       ageOption: {},
       wenhuaOption: {},
       zhuanjiaOption: {},
@@ -84,14 +85,36 @@ export default {
     }
   },
   mounted() {
+    this.companyOptions = JSON.parse(sessionStorage.getItem('company'));
     this.getPageData();
   },
   methods: {
+    chooseType(typeValue) {
+      if (typeValue === '2') {
+        this.$router.push({
+          name: 'employeeTrend'
+        })
+      }
+    },
+    chooseTime(timeValue) {
+      this.timeValue = timeValue;
+      this.getPageData();
+    },
+    chooseCompany(companyValue) {
+      this.companyValue = companyValue;
+      this.getPageData();
+    },
     getPageData() {
+      if (this.companyValue === '本部'){
+        this.companyValue = 1;
+      }
       this.$ajax({
         url: '/app/HumanResource/employee/structure',
         data: {
-          deviceId: '1111'
+          deviceId: '1111',
+          year: 2019,
+          month: +this.timeValue,
+          companyId: +this.companyValue
         }
       }).then(res => {
         const list = res.data.pieChartList || [];

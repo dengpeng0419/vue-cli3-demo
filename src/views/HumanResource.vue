@@ -110,10 +110,22 @@ export default {
     }
   },
   mounted() {
-    //this.datas = this.genData(50);
+    // this.datas = this.genData(50);
     this.getHomeData();
+    this.getCompany();
   },
   methods: {
+    getCompany() {
+      this.$ajax({
+        url: '/app/HumanResource/company/list',
+        data: {
+          deviceId: '1111'
+        }
+      }).then(res => {
+        const company = res.data;
+        sessionStorage.setItem('company', JSON.stringify(company));
+      })
+    },
     toEmployeeNumber() {
       this.$router.push({
         name: 'employeeTrend'
