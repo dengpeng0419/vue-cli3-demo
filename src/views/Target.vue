@@ -15,8 +15,7 @@ export default {
   },
   methods: {
     getHomeData() {
-      axios.post("/purchase/init").then(res => {
-        console.log(res.data);
+      axios.post("/purchase/init").then(() => {
         // ...
       });
     }

@@ -76,7 +76,6 @@ export default {
           deviceId: '1111'
         }
       }).then(res => {
-        console.log(res.data);
         const list = res.data.pieChartList || [];
         if (list.length < 1) {
           return;

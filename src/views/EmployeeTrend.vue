@@ -94,8 +94,6 @@ export default {
         list[3].content.map((item) => {
           muti_employee4.push(item.employeeCount);
         })
-        console.log(muti_employee1);
-        console.log(muti_employee2);
 
         this.trendOption = {
           tooltip: {

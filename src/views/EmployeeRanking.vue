@@ -150,7 +150,6 @@ export default {
             label: '主业在岗职工劳动生产率'
           }];
           break;
-        defaut: break;
       }
     },
     getPageData() {
