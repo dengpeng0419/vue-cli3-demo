@@ -5,25 +5,40 @@
         <img src="../assets/img/icon_back.png" width="21" height="36">
       </div>
       <div class="title">用工数量详情</div>
-      <el-select class="structure-choose" v-model="value" placeholder="用工结构">
+      <el-select class="structure-choose" @change="chooseType(typeValue)" v-model="typeValue" placeholder="用工结构">
         <el-option
-          v-for="item in options"
+          v-for="item in typeOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
-      <el-select class="company-choose" v-model="value" placeholder="按公司筛选">
+      <el-select 
+        class="company-choose" 
+        @change="selectedChange"
+        v-model="companyValue" 
+        multiple
+        :clearable=false
+        collapse-tags
+        placeholder="按公司筛选">
         <el-option
-          v-for="item in options"
+          v-for="(item, index) in companyOptions"
+          :key="index"
+          :label="item.alias"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <el-select class="start-time-choose" v-model="startValue" placeholder="开始日期">
+        <el-option
+          v-for="item in startOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
         </el-option>
       </el-select>
-      <el-select class="time-choose" v-model="value" placeholder="按时间筛选">
+      <el-select class="stop-time-choose" v-model="stopValue" placeholder="结束日期">
         <el-option
-          v-for="item in options"
+          v-for="item in stopOptions"
           :key="item.value"
           :label="item.label"
           :value="item.value">
@@ -41,35 +56,70 @@ export default {
   name: 'home',
   data() {
     return {
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
+      stopOptions: [{
+        value: '7',
+        label: '2019年7月'
       }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
+        value: '6',
+        label: '2019年6月'
       }],
-      value: '',
+      stopValue: '',
+      startOptions: [{
+        value: '7',
+        label: '2019年7月'
+      }, {
+        value: '6',
+        label: '2019年6月'
+      }],
+      startValue: '',
+      typeOptions: [{
+        value: '1',
+        label: '用工模式'
+      }, {
+        value: '2',
+        label: '用工数量'
+      }],
+      typeValue: '用工模式',
+      companyOptions: [],
+      companyValue: '',
       trendOption: {}
     }
   },
   mounted() {
+    this.companyOptions = JSON.parse(sessionStorage.getItem('company'));
+    this.companyOptions.push({alias: '总计', id: 0});
+    this.companyValue = [1];
     this.getPageData();
   },
   methods: {
+    chooseType(typeValue) {
+      if (typeValue === '2') {
+        this.$router.push({
+          name: 'employeeNumber'
+        })
+      }
+    },
+    selectedChange(val) {
+      if (val.indexOf(0) > -1) {
+        for (let i = 0; i < val.length; i++) {
+          this.companyValue.shift();
+        }
+        if(val.length > 1) {
+          this.companyValue.shift();
+        }
+      }
+      this.getPageData();
+    },
     getPageData() {
       this.$ajax({
         url: '/app/HumanResource/employee/trend',
         data: {
-          deviceId: '1111'
+          deviceId: '1111',
+          startYear: 2018,
+          startMonth: 11,
+          endYear: 2019,
+          endMonth: 7,
+          companyIdList: this.companyValue
         }
       }).then(res => {
         const list = res.data.companyEmployeeTrendList || [];
@@ -80,19 +130,23 @@ export default {
         let muti_employee2 = [];
         let muti_employee3 = [];
         let muti_employee4 = [];
+        let muti_employee5 = [];
         let muti_employee_x = [];
         list[0].content.map((item) => {
-          muti_employee1.push(item.employeeCount);
+          muti_employee1.push(item.value || 0);
           muti_employee_x.push(item.month + '月');
         })
-        list[1].content.map((item) => {
-          muti_employee2.push(item.employeeCount);
+        list[1] && list[1].content.map((item) => {
+          muti_employee2.push(item.value || 0);
         })
-        list[2].content.map((item) => {
-          muti_employee3.push(item.employeeCount);
+        list[2] && list[2].content.map((item) => {
+          muti_employee3.push(item.value || 0);
         })
-        list[3].content.map((item) => {
-          muti_employee4.push(item.employeeCount);
+        list[3] && list[3].content.map((item) => {
+          muti_employee4.push(item.value || 0);
+        })
+        list[4] && list[4].content.map((item) => {
+          muti_employee5.push(item.value || 0);
         })
 
         this.trendOption = {
@@ -148,7 +202,7 @@ export default {
           }],
           series: [
             {
-              name:'全口径劳动生产率',
+              name:'用工数量',
               type:'line',
               data: muti_employee1,
               itemStyle: {
@@ -157,7 +211,7 @@ export default {
               },
             },
             {
-              name:'职工劳动生产率',
+              name:'用工数量',
               type:'line',
               data: muti_employee2,
               itemStyle: {
@@ -166,7 +220,7 @@ export default {
               },
             },
             {
-              name:'主业在岗职工劳动生产率',
+              name:'用工数量',
               type:'line',
               data: muti_employee3,
               itemStyle: {
@@ -175,9 +229,18 @@ export default {
               },
             },
             {
-              name:'主业在岗职工劳动生产率2',
+              name:'用工数量',
               type:'line',
               data: muti_employee4,
+              itemStyle: {
+                color: '#efea3d',
+                borderColor: '#efea3d'
+              },
+            },
+            {
+              name:'用工数量',
+              type:'line',
+              data: muti_employee5,
               itemStyle: {
                 color: '#efea3d',
                 borderColor: '#efea3d'
@@ -212,14 +275,23 @@ export default {
         top: 0;
       }
       .company-choose {
+        display: flex;
+        flex-wrap: nowrap;
         position: absolute;
         right: 600px;
         top: 0;
       }
-      .time-choose {
+      .start-time-choose {
         position: absolute;
-        right: 160px;
+        right: 330px;
         top: 0;
+        width: 240px;
+      }
+      .stop-time-choose {
+        position: absolute;
+        right: 60px;
+        top: 0;
+        width: 240px;
       }
     }
     .trend-chart {
@@ -239,6 +311,13 @@ export default {
     }
     .el-input__inner {
       color: #77bde1;
+    }
+    .el-select .el-tag {
+      color: #77bde1;
+      background: rgba(0, 0, 0, 0);
+    }
+    .el-select .el-tag__close.el-icon-close {
+      display: none;
     }
   }
 </style>

@@ -39,7 +39,14 @@ export default new Router({
           components: {
             homeView: () => import('./views/HumanResource.vue')
           }
-        }
+        },
+        {
+          path: '/manage/index',
+          name: 'manageIndex',
+          components: {
+            homeView:  () => import('./views/manage/Index.vue')
+          }
+        },
       ]
     },
     {
@@ -86,6 +93,31 @@ export default new Router({
       path: '/staffon-ranking',
       name: 'staffonRanking',
       component: () => import('./views/EmployeeRanking.vue')
+    },
+    {
+      path: '/asset-structure',
+      name: 'assetStructure',
+      component: () => import('./views/manage/AssetStructure.vue')
+    },
+    {
+      path: '/asset-trend',
+      name: 'assetTrend',
+      component: () => import('./views/manage/AssetTrend.vue')
+    },
+    {
+      path: '/economic-value',
+      name: 'economicValue',
+      component: () => import('./views/manage/EconomicValue.vue')
+    },
+    {
+      path: '/opening-cash',
+      name: 'openingCash',
+      component: () => import('./views/manage/OpeningCash.vue')
+    },
+    {
+      path: '/manage-profit',
+      name: 'manageProfit',
+      component: () => import('./views/manage/ManageProfit.vue')
     },
   ]
 })

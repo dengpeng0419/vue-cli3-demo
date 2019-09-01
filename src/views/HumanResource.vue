@@ -26,7 +26,7 @@
     </div>
     <div class="bottom-frame">
       <div class="left-frame">
-        <!-- <router-link class="chart-jump"></router-link> -->
+        <router-link to="/employee-productivity" class="chart-jump"></router-link>
         <v-chart class="chart-employee" :options="option"></v-chart>
         <div class="left-bottom-frame">
           <router-link to="/all-ranking" class="rect-bg">
@@ -47,6 +47,7 @@
         </div>
       </div>
       <div class="right-frame">
+        <router-link to="/employee-trend" class="chart-jump"></router-link>
         <div class="employee-number-frame">
           <v-chart class="chart-productive" :options="polar"></v-chart>
         </div>
@@ -512,6 +513,15 @@ export default {
         background-repeat: no-repeat;
         margin-top: 10px;
         padding-bottom: 15px;
+        .chart-jump {
+          position: absolute;
+          top: 0;
+          left: 20px;
+          width: 360px;
+          height: 100px;
+          background: rgba(0,0,0,0);
+          z-index: 10;
+        }
         .chart-productive {
           width: 600px;
           height: 500px;
