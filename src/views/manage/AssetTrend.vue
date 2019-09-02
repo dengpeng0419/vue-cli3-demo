@@ -162,7 +162,6 @@ export default {
               name:'流动资产',
               type:'line',
               stack: '总量',
-              itemStyle: {normal: {areaStyle: {type: 'default'}}},
               data:[120, 132, 101, 134, 90, 230, 210],
               itemStyle: {
                 borderColor: '#3589c4',
@@ -178,7 +177,6 @@ export default {
               name:'非流动资产',
               type:'line',
               stack: '总量',
-              itemStyle: {normal: {areaStyle: {type: 'default'}}},
               data:[220, 182, 191, 234, 290, 330, 310],
               itemStyle: {
                 normal: {
@@ -237,9 +235,6 @@ export default {
             {
               type : 'value',
               name : '资产总量',
-              axisLabel : {
-                formatter: '{value} ml'
-              },
               axisLine: {
                 show: false,
                 lineStyle: {
@@ -264,9 +259,6 @@ export default {
             {
               type : 'value',
               name : '增长率',
-              axisLabel : {
-                  formatter: '{value} °C'
-              },
               axisLine: {
                 show: false,
                 lineStyle: {

@@ -31,7 +31,7 @@
     </div>
     <div class="bottom-frame">
       <div class="left-frame">
-        <router-link to="/employee-productivity" class="chart-jump"></router-link>
+        <router-link to="/opening-cash" class="chart-jump"></router-link>
         <div class="left-top-frame">
           <div class="left-frame-title">主营业务收入\成本</div>
           <div class="row-manage">
@@ -66,6 +66,7 @@
           </div>
         </div>
         <div class="left-bottom-frame">
+          <!-- <router-link to="/asset-structure" class="chart-jump"></router-link> -->
           <div class="left-bottom-title">利润总额</div>
           <div class="left-bottom-detail">
             <div class="names">
@@ -88,7 +89,7 @@
         </div>
       </div>
       <div class="right-frame">
-        <router-link to="/employee-trend" class="chart-jump"></router-link>
+        <router-link to="/asset-overview" class="chart-jump"></router-link>
         <div class="right-title">资产总额</div>
         <div class="chart-title">流动资产:</div>
         <div class="chart-value">
@@ -469,6 +470,15 @@ export default {
           padding-top: 25px;
           padding-left: 18px;
           padding-right: 25px;
+          .chart-jump {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            width: 400px;
+            height: 100px;
+            background: rgba(0,0,0,0);
+            z-index: 10;
+          }
           .left-bottom-title {
             color: #77bde1;
             font-size: 40px;

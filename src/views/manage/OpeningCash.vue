@@ -70,44 +70,44 @@ export default {
       this.getPageData();
     },
     getPageData() {
-      this.$ajax({
-        url: '/app/HumanResource/employee/trend',
-        data: {
-          deviceId: '1111',
-          startYear: 2018,
-          startMonth: 11,
-          endYear: 2019,
-          endMonth: 7,
-          companyIdList: this.companyValue
-        }
-      }).then(res => {
-        const list = res.data.companyEmployeeTrendList || [];
-        if (list.length < 1) {
-          return;
-        } 
-        let muti_employee1 = [];
-        let muti_employee2 = [];
-        let muti_employee3 = [];
+      // this.$ajax({
+      //   url: '/app/HumanResource/employee/trend',
+      //   data: {
+      //     deviceId: '1111',
+      //     startYear: 2018,
+      //     startMonth: 11,
+      //     endYear: 2019,
+      //     endMonth: 7,
+      //     companyIdList: this.companyValue
+      //   }
+      // }).then(res => {
+      //   const list = res.data.companyEmployeeTrendList || [];
+      //   if (list.length < 1) {
+      //     return;
+      //   } 
+        let muti_employee1 = [1,2,3,4,5,6,7];
+        let muti_employee2 = [1,3,3,1,5,6,9];
+        let muti_employee3 = [1,4,5,7,2,6,1];
         let muti_employee4 = [];
         let muti_employee5 = [];
         let muti_employee_x = [];
 
-        list[0].content.map((item) => {
-          muti_employee1.push(item.value || 0);
-          muti_employee_x.push(item.month + '月');
-        })
-        list[1] && list[1].content.map((item) => {
-          muti_employee2.push(item.value || 0);
-        })
-        list[2] && list[2].content.map((item) => {
-          muti_employee3.push(item.value || 0);
-        })
-        list[3] && list[3].content.map((item) => {
-          muti_employee4.push(item.value || 0);
-        })
-        list[4] && list[4].content.map((item) => {
-          muti_employee5.push(item.value || 0);
-        })
+        // list[0].content.map((item) => {
+        //   muti_employee1.push(item.value || 0);
+        //   muti_employee_x.push(item.month + '月');
+        // })
+        // list[1] && list[1].content.map((item) => {
+        //   muti_employee2.push(item.value || 0);
+        // })
+        // list[2] && list[2].content.map((item) => {
+        //   muti_employee3.push(item.value || 0);
+        // })
+        // list[3] && list[3].content.map((item) => {
+        //   muti_employee4.push(item.value || 0);
+        // })
+        // list[4] && list[4].content.map((item) => {
+        //   muti_employee5.push(item.value || 0);
+        // })
 
         this.topOption = {
           tooltip : {
@@ -180,7 +180,6 @@ export default {
               name:'流动资产',
               type:'line',
               stack: '总量',
-              itemStyle: {normal: {areaStyle: {type: 'default'}}},
               data:[120, 132, 101, 134, 90, 230, 210],
               itemStyle: {
                 borderColor: '#3589c4',
@@ -196,7 +195,6 @@ export default {
               name:'非流动资产',
               type:'line',
               stack: '总量',
-              itemStyle: {normal: {areaStyle: {type: 'default'}}},
               data:[220, 182, 191, 234, 290, 330, 310],
               itemStyle: {
                 normal: {
@@ -323,8 +321,8 @@ export default {
             }
           ]
         }
-      });
-    }
+    //   });
+     }
   }
 }
 </script>

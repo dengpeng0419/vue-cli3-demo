@@ -119,5 +119,15 @@ export default new Router({
       name: 'manageProfit',
       component: () => import('./views/manage/ManageProfit.vue')
     },
+    {
+      path: '/manage-cost',
+      name: 'manageCost',
+      component: () => import('./views/manage/ManageCost.vue')
+    },
+    {
+      path: '/asset-overview',
+      name: 'assetOverview',
+      component: () => import('./views/manage/AssetOverview.vue')
+    },
   ]
 })

@@ -5,16 +5,19 @@
     </div>
     <div id="nav">
       <router-link tag="div" to="/" class="left-nav">首页</router-link>
+      <router-link tag="div" to="/manage/index" class="left-nav">经营指标</router-link>
       <!-- <router-link tag="div" to="/target" class="left-nav">经营指标</router-link>
       <router-link tag="div" to="/ele-scale" class="left-nav">电网规模</router-link>
       <router-link tag="div" to="/elec-purchase" class="left-nav">电力购销</router-link>
       <router-link tag="div" to="/advise" class="left-nav">投资建议</router-link>
       <router-link tag="div" to="/safe-produce" class="left-nav">安全生产</router-link> -->
       <router-link tag="div" to="/serves" class="left-nav">综合计划</router-link>
-      <router-link tag="div" to="/manage/index" class="left-nav">经营指标</router-link>
-      <router-link tag="div" to="/human-resource" class="left-nav">人力资源</router-link>
       <router-link tag="div" to="/running" class="left-nav">优质服务</router-link>
-      <!-- <router-link tag="div" to="/machine" class="left-nav">装机规模</router-link> -->
+      <router-link tag="div" to="/human-resource" class="left-nav">核心资源</router-link>
+      <router-link tag="div" to="/safe-produce" class="left-nav">安全生产</router-link>
+      <router-link tag="div" to="/ele-scale" class="left-nav">考核指标</router-link>
+      <router-link tag="div" to="/advise" class="left-nav">调度运行</router-link>
+      <router-link tag="div" to="/machine" class="left-nav">同业对接</router-link>
     </div>
     <router-view name="homeView"/>
   </div>

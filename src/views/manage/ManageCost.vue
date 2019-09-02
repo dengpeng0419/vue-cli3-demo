@@ -1,10 +1,10 @@
 <template>
-  <div class="manage-profit">
+  <div class="manage-cost">
     <div class="title-bar">
       <div style="position: absolute; top: 0; left: 45px;" @click="$router.go(-1)">
         <img src="../../assets/img/icon_back.png" width="21" height="36">
       </div>
-      <div class="title">营业利润</div>
+      <div class="title">营业收入/成本</div>
       <el-select class="company-choose" @change="chooseCompany(companyValue)" v-model="companyValue" placeholder="按公司筛选">
         <el-option
           v-for="item in companyOptions"
@@ -27,12 +27,19 @@
       <div class="button">城市对比</div>
     </div>
     <div class="top-frame">
+      <div class="line-desc">
+        <div class="left">资产总额(亿元)</div>
+        <div class="middle">123456</div>
+        <div class="right">比去年同期:</div>
+        <div class="right-arrow arrow-up"></div>
+        <div class="right-num">30%</div>
+      </div>
       <div class="top-bottom-frame">
         <v-chart class="chart-top" :options="topOption"></v-chart>
         <!-- <v-chart class="chart-top" :options="bottomOption"></v-chart> -->
         <div class="row-manage">
           <div class="chart-manage">
-            <div class="chart-title"><p>净利润</p><p>亿元</p></div>
+            <div class="chart-title">主营业务收入(电力产品)  亿元</div>
             <div class="chart-desc">月度值</div>
             <div class="middle">123456</div>
             <div class="chart-content">
@@ -47,7 +54,7 @@
             </div>
           </div>
           <div class="chart-manage">
-            <div class="chart-title"><p>利润总额</p><p>亿元</p></div>
+            <div class="chart-title">主营业务收入(电力产品)  亿元</div>
             <div class="chart-desc">月度值</div>
             <div class="middle">123456</div>
             <div class="chart-content">
@@ -62,17 +69,36 @@
             </div>
           </div>
           <div class="chart-manage">
-            
+            <div class="chart-title">主营业务收入(电力产品)  亿元</div>
+            <div class="chart-desc">月度值</div>
+            <div class="middle">123456</div>
+            <div class="chart-content">
+              <div class="left">
+                <div class="name">年累计值</div>
+                <div class="value">99999</div>
+              </div>
+              <div class="right">
+                <div class="name">比去年同期</div>
+                <div class="value">99999<span class="span-img arrow-up"></span></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="top-frame">
+      <div class="line-desc">
+        <div class="left">主营业务成本</div>
+        <div class="middle">123456</div>
+        <div class="right">比去年同期:</div>
+        <div class="right-arrow arrow-up"></div>
+        <div class="right-num">30%</div>
+      </div>
       <div class="top-bottom-frame">
         <v-chart class="chart-bottom" :options="bottomOption"></v-chart>
         <div class="row-manage">
           <div class="chart-manage">
-            <div class="chart-title"><p>营业利润</p><p>亿元</p></div>
+            <div class="chart-title">主营业务成本(电力产品)  亿元</div>
             <div class="chart-desc">月度值</div>
             <div class="middle">123456</div>
             <div class="chart-content">
@@ -87,7 +113,7 @@
             </div>
           </div>
           <div class="chart-manage">
-            <div class="chart-title"><p>营业外收入</p><p>亿元</p></div>
+            <div class="chart-title">主营业务成本(电力产品)  亿元</div>
             <div class="chart-desc">月度值</div>
             <div class="middle">123456</div>
             <div class="chart-content">
@@ -102,7 +128,7 @@
             </div>
           </div>
           <div class="chart-manage">
-            <div class="chart-title"><p>营业外支出</p><p>亿元</p></div>
+            <div class="chart-title">主营业务成本(电力产品)  亿元</div>
             <div class="chart-desc">月度值</div>
             <div class="middle">123456</div>
             <div class="chart-content">
@@ -191,212 +217,130 @@ export default {
         })
 
         this.topOption = {
-          // tooltip : {
-          //   trigger: 'axis',
-          //   axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-          //     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-          //   },
-          //     textStyle: {
-          //     align: 'left'
-          //   }
-          // },
+          tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
           legend: {
-            data:['利润总额','净利润'],
             x: 'center',
             y: 'bottom',
-            padding: 15,
+            data:['主营业务收入(电力产品)','主营业务收入(其他)','其他业务收入'],
             textStyle: {
-              color: '#77bde1'
+              color: '#77bde1',
+              fontSize: 10,
             }
           },
-          grid: {
-            left: '4%',
-            right: '4%',
-            bottom: '15%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type : 'category',
-              data : [''],
-              axisLine: {
-                lineStyle: {
-                  color: '#bdd6ef'
-                }
-              },
-              axisTick: {
-                show: false
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#77bde1',
-                  fontSize: 12
-                }
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type : 'value',
-              axisLine: {
-                show: false,
-                lineStyle: {
-                  color: '#bdd6ef'
-                }
-              },
-              axisTick: {
-                show: false
-              },
-              splitLine: {
-                lineStyle: {
-                  color: '#50586c'
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#77bde1',
-                  fontSize: 12
+          calculable : false,
+          series : [{
+            name:'营业收入',
+            type:'pie',
+            selectedMode: 'single',
+            radius : [0, 50],
+            // for funnel
+            x: '20%',
+            width: '40%',
+            funnelAlign: 'right',
+            max: 10,
+            itemStyle : {
+              normal : {
+                label : {
+                  show : false,
+                },
+                labelLine : {
+                  show : false
                 }
               }
             },
-          ],
-          series: [
-            {
-              name:'利润总额',
-              type:'bar',
-              data:[120],
-              barWidth: 60,
-              barGap: '100%',
-              itemStyle: {
-                normal: {
-                  color: '#3589c4',
+            data:[
+              {value:70, name:'主营业务收入'},
+              {value:30, name:'其他业务收入'},
+            ]
+          },
+          {
+            name:'访问来源',
+            type:'pie',
+            radius : [60, 90],
+            // for funnel
+            x: '60%',
+            width: '35%',
+            funnelAlign: 'left',
+            max: 100,
+            data:[
+              {value:20, name:'主营业务收入(电力产品)'},
+              {value:50, name:'主营业务收入(其他)'},
+              {value:30, name:'其他业务收入'}
+            ],
+            itemStyle : {
+              normal : {
+                label : {
+                  show : false,
+                },
+                labelLine : {
+                  show : false
                 }
               }
-            },
-            {
-              name:'净利润',
-              type:'bar',
-              data:[200],
-              barWidth: 60,
-              barGap: '100%',
-              // itemStyle: {
-              //   normal: {
-              //     color: '#3589c4'
-              //   }
-              // }
             }
-          ]
+         }]
         };
 
         this.bottomOption = {
-          // tooltip : {
-          //   trigger: 'axis',
-          //   axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-          //     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          tooltip: {
+            trigger: 'item',
+            textStyle: {
+              align: 'left'
+            }
+          },
+          // title : {
+          //   text: '流动资产',
+          //   x: '24%',
+          //   textStyle: {
+          //     fontSize: 18,
+          //     fontWeight: 'bolder',
+          //     color: '#77bde1'  
           //   },
-          //     textStyle: {
-          //     align: 'left'
-          //   }
           // },
           legend: {
-            data:['营业利润','营业外收入','营业外支出'],
             x: 'center',
             y: 'bottom',
-            padding: 15,
+            padding: 1,
+            data: ['主营业务收入(电力产品)','主营业务收入(其他)','其他业务收入'],
             textStyle: {
-              color: '#77bde1'
+              color: '#77bde1',
+              fontSize: 10
             }
           },
-          grid: {
-            left: '4%',
-            right: '4%',
-            bottom: '15%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type : 'category',
-              data : [''],
-              axisLine: {
-                lineStyle: {
-                  color: '#bdd6ef'
-                }
+          series : [{
+            name: '流动资产',
+            type: 'pie',
+            radius : '70%',
+            center: ['50%', '50%'],
+            data: [
+              {value:20, name:'主营业务收入(电力产品)'},
+              {value:50, name:'主营业务收入(其他)'},
+              {value:30, name:'其他业务收入'}
+            ],
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
               },
-              axisTick: {
-                show: false
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#77bde1',
-                  fontSize: 12
+              normal:{
+                // color:function(params) {
+                // //自定义颜色
+                // var colorList = ['#df4e3e', '#e98e12', '#7876b6', '#17a5c4', ];
+                //   return colorList[params.dataIndex]
+                // },
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
                 }
               }
             }
-          ],
-          yAxis: [
-            {
-              type : 'value',
-              axisLine: {
-                show: false,
-                lineStyle: {
-                  color: '#bdd6ef'
-                }
-              },
-              axisTick: {
-                show: false
-              },
-              splitLine: {
-                lineStyle: {
-                  color: '#50586c'
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#77bde1',
-                  fontSize: 12
-                }
-              }
-            },
-          ],
-          series: [
-            {
-              name:'营业利润',
-              type:'bar',
-              data:[120],
-              barWidth: 60,
-              barGap: '100%',
-              itemStyle: {
-                normal: {
-                  color: '#3589c4',
-                }
-              }
-            },
-            {
-              name:'营业外收入',
-              type:'bar',
-              data:[200],
-              barWidth: 60,
-              barGap: '100%',
-              // itemStyle: {
-              //   normal: {
-              //     color: '#3589c4'
-              //   }
-              // }
-            },
-            {
-              name:'营业外支出',
-              type:'bar',
-              data:[200],
-              barWidth: 60,
-              barGap: '100%',
-              // itemStyle: {
-              //   normal: {
-              //     color: '#3589c4'
-              //   }
-              // }
-            }
-          ]
-        };
+          }]
+        }
       });
     }
   }
@@ -404,7 +348,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .manage-profit {
+  .manage-cost {
     width: 100%;
     min-height: 100vh;
     .title-bar {
@@ -453,7 +397,6 @@ export default {
     }
 
     .top-frame, .bottom-frame {
-      box-sizing: border-box;
       position: relative;
       padding-top: 18px;
       padding-left: 18px;
@@ -473,22 +416,19 @@ export default {
           flex-direction: column;
           text-align: left;
           width: 546px;
-          height: 568px;
+          height: 488px;
           background: url(../../assets/img/manage_small_rect.png);
           background-size: 100% 100%;
           background-repeat: no-repeat;
           margin-right: 20px;
           .chart-title {
-            display: flex;
-            justify-content: space-between;
-            padding-right: 40px;
             margin-top: 10px;
             color: #77bde1;
             font-size: 36px;
             margin-left: 40px;
           }
           .chart-desc {
-            margin-top: 70px;
+            margin-top: 50px;
             color: #77bde1;
             font-size: 36px;
             margin-left: 40px;
@@ -509,7 +449,6 @@ export default {
           }
           .chart-content {
             display: flex;
-            margin-top: 40px;
             .name {
               margin-top: 30px;
               color: #77bde1;
@@ -624,12 +563,12 @@ export default {
       background-repeat: no-repeat;
     }
     .chart-top {
-      width: 760px;
-      height: 560px;
+      width: 780px;
+      height: 500px;
     }
     .chart-bottom {
-      width: 760px;
-      height: 560px;
+      width: 780px;
+      height: 500px;
     }
     .el-input__inner {
       background-color: #2b516c;
@@ -651,3 +590,4 @@ export default {
     src: url(../../assets/fonts/digifaw.ttf);
   }
 </style>
+
