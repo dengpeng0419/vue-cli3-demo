@@ -393,6 +393,11 @@ export default {
         line-height: 60px;
         color: #fff;
         background-color: #77bde1;
+        background-image: url(../../assets/img/manage_button.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+        font-size: 36px;
       }
     }
 

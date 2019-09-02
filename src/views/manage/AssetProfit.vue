@@ -1,10 +1,10 @@
 <template>
-  <div class="manage-profit">
+  <div class="asset-profit">
     <div class="title-bar">
       <div style="position: absolute; top: 0; left: 45px;" @click="$router.go(-1)">
         <img src="../../assets/img/icon_back.png" width="21" height="36">
       </div>
-      <div class="title">营业利润</div>
+      <div class="title">净资产收益率</div>
       <el-select class="company-choose" @change="chooseCompany(companyValue)" v-model="companyValue" placeholder="按公司筛选">
         <el-option
           v-for="item in companyOptions"
@@ -23,97 +23,87 @@
       </el-select>
     </div>
     <div class="buttons">
-      <div class="button"><router-link tag='span' to='profit-trend'>月度趋势</router-link></div>
-      <div class="button">城市对比</div>
+      <div class="button"><router-link tag='span' to='asset-profit-trend'>月度趋势</router-link></div>
     </div>
-    <div class="top-frame">
-      <div class="top-bottom-frame">
-        <v-chart class="chart-top" :options="topOption"></v-chart>
-        <!-- <v-chart class="chart-top" :options="bottomOption"></v-chart> -->
-        <div class="row-manage">
-          <div class="chart-manage">
-            <div class="chart-title"><p>净利润</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
+    <div class="content-frame">
+      <div class="left-frame">
+        <div class="one">
+          <div class="total-desc">
+            <div class="desc-top">资产收益率</div>
+            <div class="desc-middle">
+              <div class="right">当期值:</div>
+              <div class="middle">99.99%</div>
+            </div>
+            <div class="desc-bottom">
+              <p>同比:</p>
+              <div class="right-num">30%</div>
+              <div class="right-arrow arrow-up"></div>
             </div>
           </div>
-          <div class="chart-manage">
-            <div class="chart-title"><p>利润总额</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
-            </div>
+        </div>
+        <div class="two">
+          <div class="desc-top">资产收益率</div>
+          <div class="desc-bottom">
+            <p>同比:</p>
+            <div class="right-num">30%</div>
+            <div class="right-arrow arrow-up"></div>
+            <div class="right-desc">当期值:</div>
+            <div class="right-num">9999</div>
           </div>
-          <div class="chart-manage">
-            
+        </div>
+        <div class="two">
+          <div class="desc-top">所有者权益</div>
+          <div class="desc-bottom">
+            <p>同比:</p>
+            <div class="right-num">30%</div>
+            <div class="right-arrow arrow-up"></div>
+            <div class="right-desc">当期值:</div>
+            <div class="right-num">9999</div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="top-frame">
-      <div class="top-bottom-frame">
-        <v-chart class="chart-bottom" :options="bottomOption"></v-chart>
-        <div class="row-manage">
-          <div class="chart-manage">
-            <div class="chart-title"><p>营业利润</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
+      <div class="right-frame">
+        <div class="top-bottom-frame">
+          <div class="row-manage">
+            <div class="title">净利润</div>
+            <div class="chart-manage">
+              <div class="chart-content">
+                <div class="chart-desc">月度值</div>
+                <div class="middle">123456</div>
+                <div class="chart-content-value">
+                  <div class="left">
+                    <div class="name">年累计值</div>
+                    <div class="name">年累计值</div>
+                  </div>
+                  <div class="right">
+                    <div class="value">99999</div>
+                    <div class="value">99999</div>
+                  </div>
+                </div>
               </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
+              <v-chart class="chart-top" :options="topOption"></v-chart>
             </div>
           </div>
-          <div class="chart-manage">
-            <div class="chart-title"><p>营业外收入</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
+        </div>
+        <div class="top-bottom-frame">
+          <div class="row-manage">
+            <div class="title"><p>所有者权益</p></div>
+            <div class="chart-manage">
+              <div class="chart-content">
+                <div class="chart-desc">月度值</div>
+                <div class="middle">123456</div>
+                <div class="chart-content-value">
+                  <div class="left">
+                    <div class="name">年累计值</div>
+                    <div class="name">年累计值</div>
+                  </div>
+                  <div class="right">
+                    <div class="value">99999</div>
+                    <div class="value">99999</div>
+                  </div>
+                </div>
               </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="chart-manage">
-            <div class="chart-title"><p>营业外支出</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
+              <v-chart class="chart-top" :options="topOption"></v-chart>
             </div>
           </div>
         </div>
@@ -124,7 +114,7 @@
 
 <script>
 export default {
-  name: 'manageProfit',
+  name: 'AssetProfit',
   data() {
     return {
       timeOptions: [{
@@ -191,15 +181,6 @@ export default {
         })
 
         this.topOption = {
-          // tooltip : {
-          //   trigger: 'axis',
-          //   axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-          //     type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-          //   },
-          //     textStyle: {
-          //     align: 'left'
-          //   }
-          // },
           legend: {
             data:['利润总额','净利润'],
             x: 'center',
@@ -212,7 +193,7 @@ export default {
           grid: {
             left: '4%',
             right: '4%',
-            bottom: '15%',
+            top: '16%',
             containLabel: true
           },
           xAxis: [
@@ -404,7 +385,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .manage-profit {
+  .asset-profit {
     width: 100%;
     min-height: 100vh;
     .title-bar {
@@ -457,46 +438,43 @@ export default {
       }
     }
 
-    .top-frame, .bottom-frame {
-      box-sizing: border-box;
-      position: relative;
-      padding-top: 18px;
-      padding-left: 18px;
-    }
-
     .top-bottom-frame {
+      margin-top: 30px;
       display: flex;
+      justify-content: center;
+      width: 1524px;
+      height: 620px;
+      background-image: url(../../assets/img/middle_bg.png);
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
       .row-manage {
+        box-sizing: content-box;
         display: flex;
-        margin-top: 10px;
-        justify-content: space-between;
-        margin-left: 20px;
-        .chart-manage {
-          box-sizing: border-box;
-          padding: 20px 0;
+        flex-direction: column;
+        margin-top: 20px;
+        .title {
           display: flex;
-          flex-direction: column;
+          justify-content: space-between;
+          padding-right: 40px;
+          margin-top: 10px;
+          color: #77bde1;
+          font-size: 40px;
+        }
+        .chart-manage {
+          margin-top: 20px;
+          display: flex;
           text-align: left;
-          width: 546px;
-          height: 568px;
+          width: 1386px;
+          height: 490px;
           background: url(../../assets/img/manage_small_rect.png);
           background-size: 100% 100%;
           background-repeat: no-repeat;
           margin-right: 20px;
-          .chart-title {
-            display: flex;
-            justify-content: space-between;
-            padding-right: 40px;
-            margin-top: 10px;
-            color: #77bde1;
-            font-size: 36px;
-            margin-left: 40px;
-          }
           .chart-desc {
-            margin-top: 70px;
+            margin-top: 20px;
             color: #77bde1;
             font-size: 36px;
-            margin-left: 40px;
+            margin-left: 50px;
           }
           .middle {
             min-width: 100px;
@@ -508,24 +486,38 @@ export default {
             line-height: 80px;
             color: #fff;
             font-size: 80px;
-            margin: 20px 30px;
+            margin: 20px 100px 20px 50px;
             padding: 0 5px;
             letter-spacing: 5px;
           }
           .chart-content {
             display: flex;
+            flex-direction: column;
             margin-top: 40px;
-            .name {
-              margin-top: 30px;
-              color: #77bde1;
-              font-size: 36px;
-              margin-left: 40px;
+            width: 560px;
+            .chart-content-value {
+              display: flex;
+              margin-top: 50px;
             }
-            .value {
-              margin-top: 10px;
-              color: #fff;
-              font-size: 36px;
-              margin-left: 40px;
+            .left {
+              display: flex;
+              flex-direction: column;
+              .name {
+                margin-top: 10px;
+                color: #77bde1;
+                font-size: 36px;
+                margin-left: 50px;
+              }
+            }
+            .right {
+              display: flex;
+              flex-direction: column;
+              .value {
+                margin-top: 10px;
+                color: #fff;
+                font-size: 36px;
+                margin-left: 50px;
+              }
             }
             .span-img {
               display: inline-block;
@@ -555,7 +547,7 @@ export default {
       color: #77bde1;
       font-size: 30px;
       .middle {
-        min-width: 100px;
+        min-width: 80px;
         height: 80px;
         background: url(../../assets/img/manage_num_long.png);
         background-size: 100% 100%;
@@ -618,19 +610,137 @@ export default {
         color: #fff;
       }
     }
-    
-    .top-frame {
+    .content-frame {
+      display: flex;
+    }
+    .left-frame {
+      width: 963px;
       margin-left: 30px;
-      margin-top: 30px;
-      width: 2498px;
-      height: 620px;
-      background-image: url(../../assets/img/middle_bg.png);
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
+      
+      .one {
+        margin-top: 40px;
+        width: 963px;
+        height: 700px;
+        background-image: url(../../assets/img/middle_bg.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        .total-desc {
+          margin-top: 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          color: #77bde1;
+          font-size: 50px;
+          position: relative;
+          .middle {
+            min-width: 100px;
+            height: 135px;
+            background: url(../../assets/img/manage_num_long.png);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            font-family: tonjay;
+            line-height: 135px;
+            color: #fff;
+            font-size: 100px;
+            margin: 0 60px;
+            padding: 0 5px;
+            letter-spacing: 10px;
+          }
+          .desc-top {
+            margin: 80px 0;
+            font-size: 60px;
+          }
+          .desc-middle, .desc-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 60px;
+          }
+          .right-arrow {
+            margin-left: 20px;
+            width: 65px;
+            height: 63px;
+            background-repeat: no-repeat;
+          }
+          .arrow-up {
+            background: url(../../assets/img/manage_arrow.png);
+            background-size: 100% 100%;
+          }
+          .arrow-down {
+            background: url(../../assets/img/manage_arrow.png);
+            background-size: 100% 100%;
+            transform: rotate(180deg);
+          }
+          .right-num {
+            margin-left: 40px;
+            color: #fff;
+          }
+        }
+      }
+      .two {
+        margin-top: 20px;
+        width: 963px;
+        height: 262px;
+        background-image: url(../../assets/img/middle_bg.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        color: #77bde1;
+        font-size: 50px;
+        display: flex;
+        flex-direction: column;
+        .desc-top {
+          margin-top: 40px;
+          font-size: 50px;
+        }
+        .desc-bottom {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 40px;
+        }
+        .right-arrow {
+          margin-left: 20px;
+          width: 65px;
+          height: 63px;
+          background-repeat: no-repeat;
+        }
+        .arrow-up {
+          background: url(../../assets/img/manage_arrow.png);
+          background-size: 100% 100%;
+        }
+        .arrow-down {
+          background: url(../../assets/img/manage_arrow.png);
+          background-size: 100% 100%;
+          transform: rotate(180deg);
+        }
+        .right-desc {
+          margin-left: 30px;
+        }
+        .right-num {
+          margin-left: 40px;
+          color: #fff;
+        }
+      }
+      .three {
+        margin-top: 20px;
+        width: 963px;
+        height: 262px;
+        background-image: url(../../assets/img/middle_bg.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        color: #77bde1;
+        font-size: 50px;
+      }
+    }
+    .right-frame {
+      margin-left: 30px;
+      margin-top: 10px;
+      width: 1524px;
     }
     .chart-top {
       width: 760px;
-      height: 560px;
+      height: 480px;
     }
     .chart-bottom {
       width: 760px;

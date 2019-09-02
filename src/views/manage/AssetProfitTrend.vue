@@ -1,10 +1,10 @@
 <template>
-  <div class="asset-trend">
+  <div class="profit-trend">
     <div class="title-bar">
       <div style="position: absolute; top: 0; left: 45px;" @click="$router.go(-1)">
         <img src="../../assets/img/icon_back.png" width="21" height="36">
       </div>
-      <div class="title">资产月度趋势</div>
+      <div class="title">净资产收益率趋势</div>
       <el-select class="company-choose" @change="chooseCompany(companyValue)" v-model="companyValue" placeholder="按公司筛选">
         <el-option
           v-for="item in companyOptions"
@@ -19,8 +19,18 @@
         <div class="year">三年</div>
       </div>
     </div>
-    <v-chart class="chart-top" :options="topOption"></v-chart>
     <v-chart class="chart-bottom" :options="bottomOption"></v-chart>
+    <div class="top-frame">
+      <v-chart class="chart-top" :options="topOption"></v-chart>
+      <div class="years">
+        <div class="year choose-year">2017</div>
+        <div class="year">2018</div>
+        <div class="year">2019</div>
+      </div>
+      <div class="types">
+        <div class="type choose-type">净资产收益率同期对比</div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,46 +67,60 @@ export default {
       this.getPageData();
     },
     getPageData() {
-      this.$ajax({
-        url: '/app/HumanResource/employee/increaseAndDecrease/structure',
-        data: {
-          deviceId: '1111',
-          year: 2019,
-          month: 7,
-          companyId: 0
-        }
-      }).then(res => {
-        const list = res.data.pieChartList || [];
-        if (list.length < 1) {
-          return;
-        } 
-        const age_data = list[0].content || [];
-        let pie_age = [];
-        let pie_age_x = [];
-        age_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_age.push(obj);
-          pie_age_x.push(item.label);
-        })
-        const wenhua_data = list[1].content || [];
-        let pie_wenhua = [];
-        let pie_wenhua_x = [];
-        wenhua_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_wenhua.push(obj);
-          pie_wenhua_x.push(item.label);
-        })
+      // this.$ajax({
+      //   url: '/app/HumanResource/employee/trend',
+      //   data: {
+      //     deviceId: '1111',
+      //     startYear: 2018,
+      //     startMonth: 11,
+      //     endYear: 2019,
+      //     endMonth: 7,
+      //     companyIdList: this.companyValue
+      //   }
+      // }).then(res => {
+      //   const list = res.data.companyEmployeeTrendList || [];
+      //   if (list.length < 1) {
+      //     return;
+      //   } 
+        let muti_employee1 = [1,2,3,4,5,6,7];
+        let muti_employee2 = [1,3,3,1,5,6,9];
+        let muti_employee3 = [1,4,5,7,2,6,1];
+        let muti_employee4 = [];
+        let muti_employee5 = [];
+        let muti_employee_x = [];
+
+        // list[0].content.map((item) => {
+        //   muti_employee1.push(item.value || 0);
+        //   muti_employee_x.push(item.month + '月');
+        // })
+        // list[1] && list[1].content.map((item) => {
+        //   muti_employee2.push(item.value || 0);
+        // })
+        // list[2] && list[2].content.map((item) => {
+        //   muti_employee3.push(item.value || 0);
+        // })
+        // list[3] && list[3].content.map((item) => {
+        //   muti_employee4.push(item.value || 0);
+        // })
+        // list[4] && list[4].content.map((item) => {
+        //   muti_employee5.push(item.value || 0);
+        // })
 
         this.topOption = {
-          tooltip : {
-              trigger: 'axis'
+          tooltip: {
+            trigger: 'axis',
+            textStyle: {
+              align: 'left'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '3%',
+            bottom: '15%',
+            containLabel: true
           },
           legend: {
-            data:['流动资产','非流动资产'],
+            data:['2017','2018','2019'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -104,90 +128,76 @@ export default {
               color: '#77bde1'
             }
           },
-          grid: {
-            left: '3%',
-            right: '3%',
-            bottom: '18%',
-            containLabel: true
-          },
           calculable : true,
-          xAxis: [
-            {
-              type : 'category',
-              boundaryGap : false,
-              data : ['周一','周二','周三','周四','周五','周六','周日'],
-              axisLine: {
-                lineStyle: {
-                  color: '#ccc'
-                }
-              },
-              axisTick: {
-                show: false
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#77bde1',
-                  fontSize: 12
-                }
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type : 'value',
-              axisLine: {
-                show: false,
-                lineStyle: {
-                  color: '#bdd6ef'
-                }
-              },
-              axisTick: {
-                show: false
-              },
-              splitLine: {
-                lineStyle: {
-                  color: '#50586c'
-                }
-              },
-              axisLabel: {
-                textStyle: {
-                  color: '#77bde1',
-                  fontSize: 12
-                }
-              }
-            }
-          ],
-          series: [
-            {
-              name:'流动资产',
-              type:'line',
-              stack: '总量',
-              data:[120, 132, 101, 134, 90, 230, 210],
-              itemStyle: {
-                borderColor: '#3589c4',
-                normal: {
-                  color: '#3589c4',
-                  areaStyle: {
-                    color: '#3589c4'
-                  }
-                }
+          xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            data: muti_employee_x,
+            axisLine: {
+              lineStyle: {
+                color: '#bdd6ef'
               }
             },
-            {
-              name:'非流动资产',
-              type:'line',
-              stack: '总量',
-              data:[220, 182, 191, 234, 290, 330, 310],
-              itemStyle: {
-                normal: {
-                  color: '#3ebfdf',
-                  borderColor: '#3ebfdf',
-                  areaStyle: {
-                    color: '#3ebfdf'
-                  }
-                }
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#77bde1',
+                fontSize: 12
               }
             }
+          }],
+          yAxis: [{
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: '#bdd6ef'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              lineStyle: {
+                color: '#50586c'
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#77bde1',
+                fontSize: 12
+              }
+            }
+          }],
+          series: [
+            {
+              name:'2017',
+              type:'line',
+              data: muti_employee1,
+              itemStyle: {
+                color: '#6aa129',
+                borderColor: '#6aa129'
+              },
+            },
+            {
+              name:'2018',
+              type:'line',
+              data: muti_employee2,
+              itemStyle: {
+                color: '#17a5c4',
+                borderColor: '#17a5c4'
+              },
+            },
+            {
+              name:'2019',
+              type:'line',
+              data: muti_employee3,
+              itemStyle: {
+                color: '#efea3d',
+                borderColor: '#efea3d'
+              },
+            },
           ]
         };
 
@@ -197,7 +207,7 @@ export default {
           },
           calculable : true,
           legend: {
-            data:['资产总量','增长率'],
+            data:['净利润','净利润收益率','所有者权益'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -283,9 +293,9 @@ export default {
           ],
           series: [
             {
-              name:'资产总量',
+              name:'净利润',
               type:'bar',
-              data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+              data:[2.0, 4.9, 67.0, 23.2, 25.6, 76.7, 35.6, 62.2, 32.6, 20.0, 6.4, 3.3],
               barWidth: 24,
               itemStyle: {
                 normal: {
@@ -294,7 +304,18 @@ export default {
               }
             },
             {
-              name:'增长率',
+              name:'净利润收益率',
+              type:'bar',
+              data:[2.0, 4.9, 67.0, 23.2, 25.6, 76.7, 35.6, 62.2, 32.6, 20.0, 6.4, 3.3],
+              barWidth: 24,
+              // itemStyle: {
+              //   normal: {
+              //     color: '#17a5c4'
+              //   }
+              // }
+            },
+            {
+              name:'所有者权益',
               type:'line',
               yAxisIndex: 1,
               data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
@@ -307,14 +328,14 @@ export default {
             }
           ]
         };
-      });
-    }
+    //   });
+     }
   }
 }
 </script>
 
 <style lang="scss">
-  .asset-trend {
+  .profit-trend {
     width: 100%;
     min-height: 100vh;
     .title-bar {
@@ -343,24 +364,45 @@ export default {
         right: 160px;
         top: 0;
       }
-      .years {
-        position: absolute;
-        right: 200px;
-        display: flex;
-        color: #77bde1;
-        font-size: 32px;
-        .year {
-          margin-left: 40px;
-        }
-        .choose-year {
-          color: #fff;
-        }
+    }
+
+    .top-frame, .bottom-frame {
+      position: relative;
+    }
+
+    .years {
+      position: absolute;
+      top: 20px;;
+      right: 200px;
+      display: flex;
+      color: #77bde1;
+      font-size: 32px;
+      .year {
+        margin-left: 40px;
+      }
+      .choose-year {
+        color: #fff;
+      }
+    }
+
+    .types {
+      position: absolute;
+      top: 20px;
+      left: 100px;
+      display: flex;
+      color: #77bde1;
+      font-size: 32px;
+      .type {
+        margin-left: 40px;
+      }
+      .choose-type {
+        color: #fff;
       }
     }
     
     .chart-top {
       margin-left: 70px;
-      margin-top: 100px;
+      margin-top: 30px;
       width: 2420px;
       height: 568px;
       background-image: url(../../assets/img/middle_bg.png);
@@ -369,9 +411,9 @@ export default {
     }
     .chart-bottom {
       margin-left: 70px;
-      margin-top: 100px;
+      margin-top: 40px;
       width: 2420px;
-      height: 568px;
+      height: 732px;
       background-image: url(../../assets/img/middle_bg.png);
       background-size: 100% 100%;
       background-repeat: no-repeat;

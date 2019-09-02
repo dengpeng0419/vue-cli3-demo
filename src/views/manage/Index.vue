@@ -27,6 +27,21 @@
           <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
           <div class="des">比去年同期:&uarr;19%</div>
         </router-link>
+        <router-link to="/economy-increase" class="rect-bg">
+          <div class="title">经济增加值(亿元)</div>
+          <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
+          <div class="des">比去年同期:&uarr;19%</div>
+        </router-link>
+        <router-link to="/asset-profit" class="rect-bg">
+          <div class="title">净资产收益率</div>
+          <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
+          <div class="des">比去年同期:&uarr;19%</div>
+        </router-link>
+        <router-link to="/asset-debt" class="rect-bg">
+          <div class="title">资产负债率</div>
+          <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
+          <div class="des">比去年同期:&uarr;19%</div>
+        </router-link>
       </div>
     </div>
     <div class="bottom-frame">
@@ -89,7 +104,7 @@
         </div>
       </div>
       <div class="right-frame">
-        <router-link to="/asset-overview" class="chart-jump"></router-link>
+        <router-link to="/asset-structure" class="chart-jump"></router-link>
         <div class="right-title">资产总额</div>
         <div class="chart-title">流动资产:</div>
         <div class="chart-value">
@@ -354,7 +369,7 @@ export default {
       .top-data {
         display: flex;
         margin-left: 16px;
-        width: 2170px;
+        width: 3442px;
         height: 280px;
         .rect-bg {
           width: 424px;

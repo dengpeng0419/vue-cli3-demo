@@ -105,11 +105,6 @@ export default new Router({
       component: () => import('./views/manage/AssetTrend.vue')
     },
     {
-      path: '/economic-value',
-      name: 'economicValue',
-      component: () => import('./views/manage/EconomicValue.vue')
-    },
-    {
       path: '/opening-cash',
       name: 'openingCash',
       component: () => import('./views/manage/OpeningCash.vue')
@@ -128,6 +123,41 @@ export default new Router({
       path: '/asset-overview',
       name: 'assetOverview',
       component: () => import('./views/manage/AssetOverview.vue')
+    },
+    {
+      path: '/economy-increase',
+      name: 'economyIncrease',
+      component: () => import('./views/manage/EconomyIncrease.vue')
+    },
+    {
+      path: '/profit-trend',
+      name: 'profitTrend',
+      component: () => import('./views/manage/ProfitTrend.vue')
+    },
+    {
+      path: '/economy-trend',
+      name: 'economyTrend',
+      component: () => import('./views/manage/EconomyTrend.vue')
+    },
+    {
+      path: '/asset-profit',
+      name: 'assetProfit',
+      component: () => import('./views/manage/AssetProfit.vue')
+    },
+    {
+      path: '/asset-profit-trend',
+      name: 'assetProfitTrend',
+      component: () => import('./views/manage/AssetProfitTrend.vue')
+    },
+    {
+      path: '/asset-debt',
+      name: 'assetDebt',
+      component: () => import('./views/manage/AssetDebt.vue')
+    },
+    {
+      path: '/asset-debt-trend',
+      name: 'assetDebtTrend',
+      component: () => import('./views/manage/AssetDebtTrend.vue')
     },
   ]
 })
