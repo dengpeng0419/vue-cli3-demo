@@ -92,7 +92,7 @@ export default {
     },
     getPageData() {
       this.$ajax({
-        url: '/app/HumanResource/employee/increaseAndDecrease/structure',
+        url: '/app/financial/asset/structure',
         data: {
           deviceId: '1111',
           year: 2019,

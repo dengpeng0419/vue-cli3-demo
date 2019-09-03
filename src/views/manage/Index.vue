@@ -2,45 +2,40 @@
   <div class="manage-index">
     <div class="top-frame">
       <div class='top-data'>
-        <router-link to="/asset-structure" class="rect-bg">
+        <router-link to="/asset-structure" class="rect-bg" v-if="pageData.banner[0]">
           <div class="title">资产总额(亿元)</div>
-          <div class="value">{{pageData.employeeCount}}</div>
-          <div class="des">比去年同期:&uarr;19%</div>
+          <div class="value">{{pageData.banner[0].value}}</div>
+          <div class="des">比去年同期:&uarr;{{pageData.banner[0].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/opening-cash" class="rect-bg">
+        <router-link to="/opening-cash" class="rect-bg" v-if="pageData.banner[1]">
           <div class="title">营业收入</div>
-          <div class="value">{{pageData.employeeIncreaseTotal}}</div>
-          <div class="des">比去年同期:&darr;19%</div>
+          <div class="value">{{pageData.banner[1].value}}</div>
+          <div class="des">比去年同期:&darr;{{pageData.banner[1].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/opening-cash" class="rect-bg">
+        <router-link to="/opening-cash" class="rect-bg" v-if="pageData.banner[2]">
           <div class="title">营业成本</div>
-          <div class="value">{{pageData.employeeDecreaseTotal}}</div>
-          <div class="des">比去年同期:&uarr;19%</div>
+          <div class="value">{{pageData.banner[2].value}}</div>
+          <div class="des">比去年同期:&uarr;{{pageData.banner[2].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/manage-profit" class="rect-bg">
+        <router-link to="/manage-profit" class="rect-bg" v-if="pageData.banner[3]">
           <div class="title">利润总额(亿元)</div>
-          <div class="value">{{pageData.employeeTalentEquivalentDensity}}</div>
-          <div class="des">比去年同期:&uarr;19%</div>
+          <div class="value">{{pageData.banner[3].value}}</div>
+          <div class="des">比去年同期:&uarr;{{pageData.banner[3].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/manage-profit" class="rect-bg">
-          <div class="title">净利润</div>
-          <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
-          <div class="des">比去年同期:&uarr;19%</div>
-        </router-link>
-        <router-link to="/economy-increase" class="rect-bg">
+        <router-link to="/economy-increase" class="rect-bg" v-if="pageData.banner[4]">
           <div class="title">经济增加值(亿元)</div>
-          <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
-          <div class="des">比去年同期:&uarr;19%</div>
+          <div class="value">{{pageData.banner[4].value}}</div>
+          <div class="des">比去年同期:&uarr;{{pageData.banner[4].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/asset-profit" class="rect-bg">
+        <router-link to="/asset-profit" class="rect-bg" v-if="pageData.banner[5]">
           <div class="title">净资产收益率</div>
-          <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
-          <div class="des">比去年同期:&uarr;19%</div>
+          <div class="value">{{pageData.banner[5].value}}</div>
+          <div class="des">比去年同期:&uarr;{{pageData.banner[5].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/asset-debt" class="rect-bg">
+        <router-link to="/asset-debt" class="rect-bg" v-if="pageData.banner[6]">
           <div class="title">资产负债率</div>
-          <div class="value">{{pageData.employeeHighSkilledPercentage}}</div>
-          <div class="des">比去年同期:&uarr;19%</div>
+          <div class="value">{{pageData.banner[6].value}}</div>
+          <div class="des">比去年同期:&uarr;{{pageData.banner[6].comparedToPreviousYear}}%</div>
         </router-link>
       </div>
     </div>
@@ -53,29 +48,29 @@
             <div class="chart-manage">
               <div class="chart-title">主营业务收入(电力产品)</div>
               <div class="chart-value">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label1" :key=index>{{item}}</div>
               </div>
               <div class="chart-title">主营业务收入(其他)</div>
               <div class="chart-value">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label2" :key=index>{{item}}</div>
               </div>
               <div class="chart-title">其他营业收入</div>
               <div class="chart-value">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label3" :key=index>{{item}}</div>
               </div>
             </div>
             <div class="chart-manage">
               <div class="chart-title">发电成本</div>
               <div class="chart-value">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label4" :key=index>{{item}}</div>
               </div>
               <div class="chart-title">购电成本</div>
               <div class="chart-value">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label5" :key=index>{{item}}</div>
               </div>
               <div class="chart-title">输配电成本</div>
               <div class="chart-value">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label6" :key=index>{{item}}</div>
               </div>
             </div>
           </div>
@@ -91,13 +86,13 @@
             </div>
             <div class="values">
               <div class="values-line">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label7" :key=index>{{item}}</div>
               </div>
               <div class="values-line">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label8" :key=index>{{item}}</div>
               </div>
               <div class="values-line">
-                <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+                <div class="detail-value" v-for="(item, index) in label9" :key=index>{{item}}</div>
               </div>
             </div>
           </div>
@@ -108,11 +103,11 @@
         <div class="right-title">资产总额</div>
         <div class="chart-title">流动资产:</div>
         <div class="chart-value">
-          <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+          <div class="detail-value" v-for="(item, index) in flueAsset" :key=index>{{item}}</div>
         </div>
         <div class="chart-title">非流动资产:</div>
         <div class="chart-value">
-          <div class="detail-value" v-for="(item, index) in [1, 2, 3, 4, 5, 6]" :key=index>{{item}}</div>
+          <div class="detail-value" v-for="(item, index) in unflueAsset" :key=index>{{item}}</div>
         </div>
         <v-chart class="chart-structure" :options="structure"></v-chart>
         <div class="pie-frame-bg"></div>
@@ -123,20 +118,23 @@
 </template>
 
 <script>
-
 export default {
   name: 'ManageIndex',
   data() {
     return {
       pageData: {
-        employeeIncreaseTotal: 0,
-        employeeProductivityAll: 0,
-        employeeTalentEquivalentDensity: 0,
-        employeeDecreaseTotal: 0,
-        employeeCount: 0,
-        employeeHighSkilledPercentage: 0,
-        employeeProductivityStaffOnPost: 0,
-        employeeProductivityStaff: 0
+        banner: [],
+        flueAsset: [],
+        unflueAsset: [],
+        label1: [],
+        label2: [],
+        label3: [],
+        label4: [],
+        label5: [],
+        label6: [],
+        label7: [],
+        label8: [],
+        label9: []
       },
       structure: {},
       option: {}
@@ -166,37 +164,64 @@ export default {
     },
     getHomeData() {
       this.$ajax({
-        url: '/app/HumanResource/employee/overview',
+        url: '/app/financial/overview',
         data: {
-          deviceId: '1111'
+          deviceId: '111',
+          startYear: 2018,
+          startMonth: 7,
+          endYear: 2019,
+          endMonth: 7,
+          companyId: 0
         }
       }).then(res => {
-        this.pageData = res.data;
-        let employee = [];
-        let employee_x = [];
-        res.data.employeeCountTrend.map((item) => {
-          employee.push(item.value)
-          employee_x.push(item.month + '月');
+        this.pageData = res.data || {};
+        const assetStructure = this.pageData.assetStructure || [];
+        const flueAsset = assetStructure[0] ? assetStructure[0].value || 0 : 0;
+        const unflueAsset = assetStructure[1] ? assetStructure[1].value || 0 : 0;
+        const pieData = [{
+          value: flueAsset,
+          name: '流动资产'
+        }, {
+          value: unflueAsset,
+          name: '非流动资产'
+        }];
+        this.flueAsset = (flueAsset+'').split('');
+        this.unflueAsset = (unflueAsset+'').split('');
+
+        const detail = this.pageData.details || [];
+        const label1 = detail[0] ? detail[0].value || 0 : 0;
+        const label2 = detail[1] ? detail[1].value || 0 : 0;
+        const label3 = detail[2] ? detail[2].value || 0 : 0;
+        const label4 = detail[3] ? detail[3].value || 0 : 0;
+        const label5 = detail[4] ? detail[4].value || 0 : 0;
+        const label6 = detail[5] ? detail[5].value || 0 : 0;
+        const label7 = detail[6] ? detail[6].value || 0 : 0;
+        const label8 = detail[7] ? detail[7].value || 0 : 0;
+        const label9 = detail[8] ? detail[8].value || 0 : 0;
+        this.label1 = (label1+'').split('');
+        this.label2 = (label2+'').split('');
+        this.label3 = (label3+'').split('');
+        this.label4 = (label4+'').split('');
+        this.label5 = (label5+'').split('');
+        this.label6 = (label6+'').split('');
+        this.label7 = (label7+'').split('');
+        this.label8 = (label8+'').split('');
+        this.label9 = (label9+'').split('');
+
+        const assetTrend = this.pageData.assetTrend || [];
+        const assetTrend1 = assetTrend[0] ? assetTrend[0].value || {} : {};
+        const assetTrend2 = assetTrend[1] ? assetTrend[1].value || {} : {};
+        const line_x = [];
+        const line1 = [];
+        const line2 = [];
+        assetTrend1.map((item) => {
+          line_x.push(item.month);
+          line1.push(item.value);
         })
-        let employee_structure = [];
-        let employee_structure_x = [];
-        res.data.employeeStructure.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          employee_structure.push(obj);
-          employee_structure_x.push(item.label);
+        assetTrend2.map((item) => {
+          line2.push(item.value);
         })
-        let muti_employee1 = [];
-        let muti_employee2 = [];
-        let muti_employee3 = [];
-        let muti_employee_x = [];
-        res.data.employeeProductivityTrend.map((item) => {
-          muti_employee1.push(item.employeeProductivityAll);
-          muti_employee2.push(item.employeeProductivityStaff);
-          muti_employee3.push(item.employeeProductivityStaffOnPost);
-          muti_employee_x.push(item.month + '月');
-        })
+
         this.structure = {
           tooltip: {
             trigger: 'item',
@@ -232,7 +257,7 @@ export default {
             type: 'pie',
             radius : '55%',
             center: ['66%', '50%'],
-            data: employee_structure,
+            data: pieData,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -283,7 +308,7 @@ export default {
           xAxis: [
             {
               type : 'category',
-              data : ['01','02','03','04','05','06','07'],
+              data : line_x,
               axisLine: {
                 lineStyle: {
                   color: '#bdd6ef'
@@ -330,7 +355,7 @@ export default {
               name:'邮件营销',
               type:'bar',
               stack: '广告',
-              data:[120, 132, 101, 134, 90, 230, 210],
+              data: line1,
               barWidth: 12,
               itemStyle: {
                 normal: {
@@ -342,7 +367,7 @@ export default {
               name:'联盟广告',
               type:'bar',
               stack: '广告',
-              data:[220, 182, 191, 234, 290, 330, 310],
+              data:line2,
               barWidth: 12,
               itemStyle: {
                 normal: {
@@ -369,7 +394,7 @@ export default {
       .top-data {
         display: flex;
         margin-left: 16px;
-        width: 3442px;
+        width: 3018px;
         height: 280px;
         .rect-bg {
           width: 424px;

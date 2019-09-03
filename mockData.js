@@ -1,6 +1,408 @@
 var MockJS = require('mockjs');
 
 var MockData = {
+    // 经营指标首页
+    '/app/financial/overview': {
+        "msg": "请求成功",
+        "code": "0",
+        "data": {
+            "assetStructure": [
+                {
+                    "label": "流动资产",
+                    "value": 475059
+                },
+                {
+                    "label": "非流动资产",
+                    "value": 728562
+                }
+            ],
+            "assetTrend": [
+                {
+                    "label": "流动资产",
+                    "value": [
+                        {
+                            "id": 7,
+                            "year": 2018,
+                            "month": 7,
+                            "value": 1
+                        },
+                        {
+                            "id": 8,
+                            "year": 2018,
+                            "month": 8,
+                            "value": 12
+                        },
+                        {
+                            "id": 9,
+                            "year": 2018,
+                            "month": 9,
+                            "value": 12
+                        },
+                        {
+                            "id": 10,
+                            "year": 2018,
+                            "month": 10,
+                            "value": 1
+                        },
+                        {
+                            "id": 12,
+                            "year": 2018,
+                            "month": 11,
+                            "value": 13
+                        },
+                        {
+                            "id": 11,
+                            "year": 2018,
+                            "month": 12,
+                            "value": 14
+                        },
+                        {
+                            "id": 13,
+                            "year": 2019,
+                            "month": 1,
+                            "value": 14
+                        },
+                        {
+                            "id": 14,
+                            "year": 2019,
+                            "month": 2,
+                            "value": 22
+                        },
+                        {
+                            "id": 15,
+                            "year": 2019,
+                            "month": 3,
+                            "value": 23
+                        },
+                        {
+                            "id": 16,
+                            "year": 2019,
+                            "month": 4,
+                            "value": 23
+                        },
+                        {
+                            "id": 17,
+                            "year": 2019,
+                            "month": 5,
+                            "value": 21
+                        },
+                        {
+                            "id": 18,
+                            "year": 2019,
+                            "month": 6,
+                            "value": 24
+                        },
+                        {
+                            "id": 19,
+                            "year": 2019,
+                            "month": 7,
+                            "value": 47
+                        }
+                    ]
+                },
+                {
+                    "label": "非流动资产",
+                    "value": [
+                        {
+                            "id": 7,
+                            "year": 2018,
+                            "month": 7,
+                            "value": 54
+                        },
+                        {
+                            "id": 8,
+                            "year": 2018,
+                            "month": 8,
+                            "value": 54
+                        },
+                        {
+                            "id": 9,
+                            "year": 2018,
+                            "month": 9,
+                            "value": 34
+                        },
+                        {
+                            "id": 10,
+                            "year": 2018,
+                            "month": 10,
+                            "value": 33
+                        },
+                        {
+                            "id": 12,
+                            "year": 2018,
+                            "month": 11,
+                            "value": 35
+                        },
+                        {
+                            "id": 11,
+                            "year": 2018,
+                            "month": 12,
+                            "value": 37
+                        },
+                        {
+                            "id": 13,
+                            "year": 2019,
+                            "month": 1,
+                            "value": 12
+                        },
+                        {
+                            "id": 14,
+                            "year": 2019,
+                            "month": 2,
+                            "value": 16
+                        },
+                        {
+                            "id": 15,
+                            "year": 2019,
+                            "month": 3,
+                            "value": 19
+                        },
+                        {
+                            "id": 16,
+                            "year": 2019,
+                            "month": 4,
+                            "value": 33
+                        },
+                        {
+                            "id": 17,
+                            "year": 2019,
+                            "month": 5,
+                            "value": 32
+                        },
+                        {
+                            "id": 18,
+                            "year": 2019,
+                            "month": 6,
+                            "value": 36
+                        },
+                        {
+                            "id": 19,
+                            "year": 2019,
+                            "month": 7,
+                            "value": 72
+                        }
+                    ]
+                }
+            ],
+            "banner": [
+                {
+                    "label": "资产总额（亿元）",
+                    "value": 77606,
+                    "comparedToPreviousYear": 0
+                },
+                {
+                    "label": "营业收入（亿元）",
+                    "value": 356,
+                    "comparedToPreviousYear": 10
+                },
+                {
+                    "label": "营业成本（亿元）",
+                    "value": 353,
+                    "comparedToPreviousYear": 12
+                },
+                {
+                    "label": "利润总额（亿元）",
+                    "value": 15,
+                    "comparedToPreviousYear": 60
+                },
+                {
+                    "label": "经济增加值（亿元）",
+                    "value": -15,
+                    "comparedToPreviousYear": 10
+                },
+                {
+                    "label": "净资产收益率",
+                    "value": 1099,
+                    "comparedToPreviousYear": 34
+                },
+                {
+                    "label": "资产负债率",
+                    "value": 340,
+                    "comparedToPreviousYear": 3
+                }
+            ],
+            "details": [
+                {
+                    "label": "主营业务收入（电力产品）",
+                    "value": 3321
+                },
+                {
+                    "label": "主营业务收入（其他）",
+                    "value": 233456
+                },
+                {
+                    "label": "其他营业收入",
+                    "value": 78423
+                },
+                {
+                    "label": "发电成本",
+                    "value": 88888
+                },
+                {
+                    "label": "购电成本",
+                    "value": 88888
+                },
+                {
+                    "label": "输配电成本",
+                    "value": 8888
+                },
+                {
+                    "label": "营业利润",
+                    "value": 9999
+                },
+                {
+                    "label": "营业外收入",
+                    "value": 988882
+                },
+                {
+                    "label": "营业外支出",
+                    "value": 1111
+                }
+            ]
+        },
+        "recordsFiltered": 0
+    },
+    // 资产结构
+    '/app/financial/asset/structure': {
+        "msg": "请求成功",
+        "code": "0",
+        "data": {
+            "assetStructure": [
+                {
+                    "label": "流动资产",
+                    "value": 4750594763
+                },
+                {
+                    "label": "非流动资产",
+                    "value": 72856288819
+                }
+            ],
+            "assetStructureDetail": [
+                {
+                    "label": "流动资产",
+                    "value": [
+                        {
+                            "label": "货币资金",
+                            "value": 1318533402
+                        },
+                        {
+                            "label": "以公允价值计量且其变动计入当期损益的金融资产",
+                            "value": 0
+                        },
+                        {
+                            "label": "衍生金融资产",
+                            "value": 0
+                        },
+                        {
+                            "label": "应收票据及应收账款",
+                            "value": 1941044106
+                        },
+                        {
+                            "label": "预付款项",
+                            "value": 500273952
+                        },
+                        {
+                            "label": "其他应收款",
+                            "value": 622858503
+                        },
+                        {
+                            "label": "存货",
+                            "value": 206721602
+                        },
+                        {
+                            "label": "持有待售资产",
+                            "value": 0
+                        },
+                        {
+                            "label": "一年内到期的非流动资产",
+                            "value": 0
+                        },
+                        {
+                            "label": "其他流动资产",
+                            "value": 161163195
+                        }
+                    ]
+                },
+                {
+                    "label": "非流动资产",
+                    "value": [
+                        {
+                            "label": "可供出售金融资产",
+                            "value": 36044436
+                        },
+                        {
+                            "label": "持有至到期投资",
+                            "value": 0
+                        },
+                        {
+                            "label": "长期应收款",
+                            "value": 0
+                        },
+                        {
+                            "label": "长期股权投资",
+                            "value": 122420000
+                        },
+                        {
+                            "label": "拨付所属资金",
+                            "value": 0
+                        },
+                        {
+                            "label": "投资性房地产",
+                            "value": 2891342
+                        },
+                        {
+                            "label": "固定资产",
+                            "value": 61320400559
+                        },
+                        {
+                            "label": "在建工程",
+                            "value": 8719918685
+                        },
+                        {
+                            "label": "在建工程",
+                            "value": 8719918685
+                        },
+                        {
+                            "label": "生产性生物资产",
+                            "value": 0
+                        },
+                        {
+                            "label": "无形资产",
+                            "value": 518051469
+                        },
+                        {
+                            "label": "开发支出",
+                            "value": 0
+                        },
+                        {
+                            "label": "商誉",
+                            "value": 0
+                        },
+                        {
+                            "label": "长期待摊费用",
+                            "value": 175898
+                        },
+                        {
+                            "label": "递延所得税资产",
+                            "value": 685670871
+                        },
+                        {
+                            "label": "其他所得税资产",
+                            "value": 1450715556
+                        }
+                    ]
+                }
+            ],
+            "banner": [
+                {
+                    "label": "资产总额（亿元）",
+                    "value": 77606883583,
+                    "comparedToPreviousYear": 0
+                }
+            ]
+        },
+        "recordsFiltered": 0
+    },
   // 排行
   '/app/HumanResource/employee/rank': {
         "msg": "请求成功",
