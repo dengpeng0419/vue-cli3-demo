@@ -24,10 +24,10 @@
     </div>
     <div class="total-desc">
       <div class="left">资产总额(亿元)</div>
-      <div class="middle">123456</div>
+      <div class="middle">{{banner}}</div>
       <div class="right">比去年同期:</div>
-      <div class="right-arrow arrow-up"></div>
-      <div class="right-num">30%</div>
+      <div class="right-arrow arrow-up" :class="{'arrow-down':bannerUp<0}"></div>
+      <div class="right-num">{{bannerUp}}%</div>
     </div>
     <div class="pie-list">
       <div class="column">
@@ -35,11 +35,11 @@
         <v-chart class="chart-top" :options="ageOption"></v-chart>
         <div class="chart-frame-top"></div>
         <div class="column-desc">
-          <div class="left">资产总额(亿元)</div>
-          <div class="middle">123456</div>
+          <div class="left">非流动资产</div>
+          <div class="middle">{{unflueAsset}}</div>
           <div class="right">比去年同期:</div>
-          <div class="right-arrow arrow-up"></div>
-          <div class="right-num">30%</div>
+          <div class="right-arrow arrow-up" :class="{'arrow-down':flueAssetUp<0}"></div>
+          <div class="right-num">{{flueAssetUp}}%</div>
         </div>
       </div>
       <div class="column">
@@ -47,11 +47,11 @@
         <v-chart class="chart-top" :options="wenhuaOption"></v-chart>
         <div class="chart-frame-top"></div>
         <div class="column-desc">
-          <div class="left">资产总额(亿元)</div>
-          <div class="middle">123456</div>
+          <div class="left">流动资产</div>
+          <div class="middle">{{flueAsset}}</div>
           <div class="right">比去年同期:</div>
-          <div class="right-arrow arrow-up"></div>
-          <div class="right-num">30%</div>
+          <div class="right-arrow arrow-up" :class="{'arrow-down':unflueAssetUp<0}"></div>
+          <div class="right-num">{{unflueAssetUp}}%</div>
         </div>
       </div>
     </div>
@@ -75,6 +75,16 @@ export default {
       companyValue: '本部',
       ageOption: {},
       wenhuaOption: {},
+      flueAsset: 0,
+      flueAssetUp: 0,
+      unflueAsset: 0,
+      unflueAssetUp: 0,
+      pie1: [],
+      pie2: [],
+      pie1_x: [],
+      pie2_x: [],
+      banner: 0,
+      bannerUp: 0
     }
   },
   mounted() {
@@ -100,31 +110,35 @@ export default {
           companyId: 0
         }
       }).then(res => {
-        const list = res.data.pieChartList || [];
-        if (list.length < 1) {
-          return;
-        } 
-        const age_data = list[0].content || [];
-        let pie_age = [];
-        let pie_age_x = [];
-        age_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_age.push(obj);
-          pie_age_x.push(item.label);
-        })
+        const data = res.data || {};
+        const assetStructure = data.assetStructure || [];
+        this.flueAsset = assetStructure[0] ? assetStructure[0].value : 0;
+        this.flueAssetUp = assetStructure[1] ? assetStructure[1].value : 0;
+        this.unflueAsset = assetStructure[2] ? assetStructure[2].value : 0;
+        this.unflueAssetUp = assetStructure[3] ? assetStructure[3].value : 0;
 
-        const wenhua_data = list[1].content || [];
-        let pie_wenhua = [];
-        let pie_wenhua_x = [];
-        wenhua_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_wenhua.push(obj);
-          pie_wenhua_x.push(item.label);
-        })
+        const banner = data.banner || [];
+        this.banner = banner[0] ? banner[0].value : 0;
+        this.bannerUp = banner[0] ? banner[0].comparedToPreviousYear : 0;
+
+        const assetStructureDetail = data.assetStructureDetail || [];
+        const pie1 = assetStructureDetail[0] ? assetStructureDetail[0].value : [];
+        const pie2 = assetStructureDetail[1] ? assetStructureDetail[1].value : [];
+        pie1.map((item) => {
+          this.pie1.push({
+            name: item.label,
+            value: item.value
+          })
+          this.pie1_x.push(item.label);
+        });
+
+        pie2.map((item) => {
+          this.pie2.push({
+            name: item.label,
+            value: item.value
+          })
+          this.pie2_x.push(item.label);
+        });
 
         this.ageOption = {
           tooltip: {
@@ -146,7 +160,7 @@ export default {
             x: 'center',
             y: 'bottom',
             padding: 10,
-            data: pie_age_x,
+            data: this.pie1_x,
             textStyle: {
               color: '#77bde1'
             }
@@ -156,7 +170,7 @@ export default {
             type: 'pie',
             radius : '50%',
             center: ['50%', '40%'],
-            data: pie_age,
+            data: this.pie1,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -200,7 +214,7 @@ export default {
             x: 'center',
             y: 'bottom',
             padding: 1,
-            data: pie_wenhua_x,
+            data: this.pie2_x,
             textStyle: {
               color: '#77bde1'
             }
@@ -210,7 +224,7 @@ export default {
             type: 'pie',
             radius : '50%',
             center: ['50%', '40%'],
-            data: pie_wenhua,
+            data: this.pie2,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -362,7 +376,7 @@ export default {
             font-family: tonjay;
             line-height: 80px;
             color: #fff;
-            font-size: 80px;
+            font-size: 50px;
             margin: 0 30px;
             padding: 0 5px;
             letter-spacing: 5px;

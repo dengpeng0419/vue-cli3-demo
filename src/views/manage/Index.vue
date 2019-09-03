@@ -4,38 +4,38 @@
       <div class='top-data'>
         <router-link to="/asset-structure" class="rect-bg" v-if="pageData.banner[0]">
           <div class="title">资产总额(亿元)</div>
-          <div class="value">{{pageData.banner[0].value}}</div>
-          <div class="des">比去年同期:&uarr;{{pageData.banner[0].comparedToPreviousYear}}%</div>
+          <div class="value">{{parseInt(pageData.banner[0].value/100000000)}}</div>
+          <div class="des">比去年同期:<span class="span-img arrow-up" :class="{'arrow-down':pageData.banner[0].comparedToPreviousYear<0}"></span>{{pageData.banner[0].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/opening-cash" class="rect-bg" v-if="pageData.banner[1]">
+        <router-link to="/manage-cost" class="rect-bg" v-if="pageData.banner[1]">
           <div class="title">营业收入</div>
           <div class="value">{{pageData.banner[1].value}}</div>
-          <div class="des">比去年同期:&darr;{{pageData.banner[1].comparedToPreviousYear}}%</div>
+          <div class="des">比去年同期:<span class="span-img arrow-up" :class="{'arrow-down':pageData.banner[1].comparedToPreviousYear<0}"></span>{{pageData.banner[1].comparedToPreviousYear}}%</div>
         </router-link>
-        <router-link to="/opening-cash" class="rect-bg" v-if="pageData.banner[2]">
+        <router-link to="/manage-cost" class="rect-bg" v-if="pageData.banner[2]">
           <div class="title">营业成本</div>
           <div class="value">{{pageData.banner[2].value}}</div>
-          <div class="des">比去年同期:&uarr;{{pageData.banner[2].comparedToPreviousYear}}%</div>
+          <div class="des">比去年同期:<span class="span-img arrow-up" :class="{'arrow-down':pageData.banner[2].comparedToPreviousYear<0}"></span>{{pageData.banner[2].comparedToPreviousYear}}%</div>
         </router-link>
         <router-link to="/manage-profit" class="rect-bg" v-if="pageData.banner[3]">
           <div class="title">利润总额(亿元)</div>
           <div class="value">{{pageData.banner[3].value}}</div>
-          <div class="des">比去年同期:&uarr;{{pageData.banner[3].comparedToPreviousYear}}%</div>
+          <div class="des">比去年同期:<span class="span-img arrow-up" :class="{'arrow-down':pageData.banner[3].comparedToPreviousYear<0}"></span>{{pageData.banner[3].comparedToPreviousYear}}%</div>
         </router-link>
         <router-link to="/economy-increase" class="rect-bg" v-if="pageData.banner[4]">
           <div class="title">经济增加值(亿元)</div>
           <div class="value">{{pageData.banner[4].value}}</div>
-          <div class="des">比去年同期:&uarr;{{pageData.banner[4].comparedToPreviousYear}}%</div>
+          <div class="des">比去年同期:<span class="span-img arrow-up" :class="{'arrow-down':pageData.banner[4].comparedToPreviousYear<0}"></span>{{pageData.banner[4].comparedToPreviousYear}}%</div>
         </router-link>
         <router-link to="/asset-profit" class="rect-bg" v-if="pageData.banner[5]">
           <div class="title">净资产收益率</div>
           <div class="value">{{pageData.banner[5].value}}</div>
-          <div class="des">比去年同期:&uarr;{{pageData.banner[5].comparedToPreviousYear}}%</div>
+          <div class="des">比去年同期:<span class="span-img arrow-up" :class="{'arrow-down':pageData.banner[5].comparedToPreviousYear<0}"></span>{{pageData.banner[5].comparedToPreviousYear}}%</div>
         </router-link>
         <router-link to="/asset-debt" class="rect-bg" v-if="pageData.banner[6]">
           <div class="title">资产负债率</div>
           <div class="value">{{pageData.banner[6].value}}</div>
-          <div class="des">比去年同期:&uarr;{{pageData.banner[6].comparedToPreviousYear}}%</div>
+          <div class="des">比去年同期:<span class="span-img arrow-up" :class="{'arrow-down':pageData.banner[6].comparedToPreviousYear<0}"></span>{{pageData.banner[6].comparedToPreviousYear}}%</div>
         </router-link>
       </div>
     </div>
@@ -44,7 +44,7 @@
         <router-link to="/opening-cash" class="chart-jump"></router-link>
         <div class="left-top-frame">
           <div class="left-frame-title">主营业务收入\成本</div>
-          <div class="row-manage">
+          <div class="row-manage" v-if="label1&&label1.length>0">
             <div class="chart-manage">
               <div class="chart-title">主营业务收入(电力产品)</div>
               <div class="chart-value">
@@ -84,7 +84,7 @@
               <div class="detail-name">营业外收入</div>
               <div class="detail-name">营业外支出(亿元)</div>
             </div>
-            <div class="values">
+            <div class="values" v-if="label7&&label7.length>0">
               <div class="values-line">
                 <div class="detail-value" v-for="(item, index) in label7" :key=index>{{item}}</div>
               </div>
@@ -122,20 +122,19 @@ export default {
   name: 'ManageIndex',
   data() {
     return {
-      pageData: {
-        banner: [],
-        flueAsset: [],
-        unflueAsset: [],
-        label1: [],
-        label2: [],
-        label3: [],
-        label4: [],
-        label5: [],
-        label6: [],
-        label7: [],
-        label8: [],
-        label9: []
-      },
+      pageData: {},
+      banner: [],
+      flueAsset: [],
+      unflueAsset: [],
+      label1: [],
+      label2: [],
+      label3: [],
+      label4: [],
+      label5: [],
+      label6: [],
+      label7: [],
+      label8: [],
+      label9: [],
       structure: {},
       option: {}
     }
@@ -185,8 +184,8 @@ export default {
           value: unflueAsset,
           name: '非流动资产'
         }];
-        this.flueAsset = (flueAsset+'').split('');
-        this.unflueAsset = (unflueAsset+'').split('');
+        this.flueAsset = (parseInt(flueAsset/100000000)+'').split('');
+        this.unflueAsset = (parseInt(unflueAsset/100000000)+'').split('');
 
         const detail = this.pageData.details || [];
         const label1 = detail[0] ? detail[0].value || 0 : 0;
@@ -396,6 +395,22 @@ export default {
         margin-left: 16px;
         width: 3018px;
         height: 280px;
+        .span-img {
+          display: inline-block;
+          margin-left: 10px;
+          width: 25px;
+          height: 23px;
+          background-repeat: no-repeat;
+        }
+        .arrow-up {
+          background: url(../../assets/img/manage_arrow.png);
+          background-size: 100% 100%;
+        }
+        .arrow-down {
+          background: url(../../assets/img/manage_arrow.png);
+          background-size: 100% 100%;
+          transform: rotate(180deg);
+        }
         .rect-bg {
           width: 424px;
           height: 243px;

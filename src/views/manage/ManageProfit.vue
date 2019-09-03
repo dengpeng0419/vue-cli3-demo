@@ -31,33 +31,18 @@
         <v-chart class="chart-top" :options="topOption"></v-chart>
         <!-- <v-chart class="chart-top" :options="bottomOption"></v-chart> -->
         <div class="row-manage">
-          <div class="chart-manage">
+          <div class="chart-manage" v-for="(item,index) in line1" :key="index">
             <div class="chart-title"><p>净利润</p><p>亿元</p></div>
             <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
+            <div class="middle">{{item.value}}</div>
             <div class="chart-content">
               <div class="left">
                 <div class="name">年累计值</div>
-                <div class="value">99999</div>
+                <div class="value">{{item.year}}</div>
               </div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="chart-manage">
-            <div class="chart-title"><p>利润总额</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{item.up}}%<span class="span-img arrow-up" :class="{'arrow-down':item.up<0}"></span></div>
               </div>
             </div>
           </div>
@@ -70,49 +55,19 @@
     <div class="top-frame">
       <div class="top-bottom-frame">
         <v-chart class="chart-bottom" :options="bottomOption"></v-chart>
-        <div class="row-manage">
+        <div class="row-manage" v-for="(item,index) in line2" :key="index">
           <div class="chart-manage">
             <div class="chart-title"><p>营业利润</p><p>亿元</p></div>
             <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
+            <div class="middle">{{item.value}}</div>
             <div class="chart-content">
               <div class="left">
                 <div class="name">年累计值</div>
-                <div class="value">99999</div>
+                <div class="value">{{item.year}}</div>
               </div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="chart-manage">
-            <div class="chart-title"><p>营业外收入</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="chart-manage">
-            <div class="chart-title"><p>营业外支出</p><p>亿元</p></div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{item.up}}%<span class="span-img arrow-up" :class="{'arrow-down':item.up<0}"></span></div>
               </div>
             </div>
           </div>
@@ -139,6 +94,18 @@ export default {
       companyValue: '本部',
       topOption: {},
       bottomOption: {},
+      main: 0,
+      cost: 0,
+      mainValue: 0,
+      costValue: 0,
+      mainUp: 0,
+      costUp: 0,
+      line1: [],
+      line1_x: [],
+      line1_y: [],
+      line2: [],
+      line2_x: [],
+      line2_y: [],
     }
   },
   mounted() {
@@ -156,38 +123,42 @@ export default {
     },
     getPageData() {
       this.$ajax({
-        url: '/app/HumanResource/employee/increaseAndDecrease/structure',
+        url: '/app/financial/profit/structure',
         data: {
-          deviceId: '1111',
+          deviceId: '111',
           year: 2019,
           month: 7,
           companyId: 0
         }
       }).then(res => {
-        const list = res.data.pieChartList || [];
-        if (list.length < 1) {
-          return;
-        } 
-        const age_data = list[0].content || [];
-        let pie_age = [];
-        let pie_age_x = [];
-        age_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_age.push(obj);
-          pie_age_x.push(item.label);
-        })
+        const data = res.data || {};
+        // const overview = data.overview || [];
+        // this.main = overview[0]&&overview[0].value ? overview[0].value.当月值 : 0;
+        // this.mainValue = overview[0]&&overview[0].value ? overview[0].value.比去年同期 : 0;
+        // this.cost = overview[1]&&overview[1].value ? overview[1].value.当月值 : 0;
+        // this.costValue = overview[1]&&overview[1].value ? overview[1].value.比去年同期 : 0;
 
-        const wenhua_data = list[1].content || [];
-        let pie_wenhua = [];
-        let pie_wenhua_x = [];
-        wenhua_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_wenhua.push(obj);
-          pie_wenhua_x.push(item.label);
+        const overview = data.overview || [];
+        overview.map((item) => {
+          this.line1_x.push(item.label);
+          this.line1_y.push(item.value.当月值);
+          this.line1.push({
+            name: item.label,
+            value: item.value.当月值,
+            year: item.value.年累计值,
+            up: item.value.比去年同期
+          })
+        })
+        const detail = data.detail[0].value || [];
+        detail.map((item) => {
+          this.line2_x.push(item.label);
+          this.line2_y.push(item.value.当月值);
+          this.line2.push({
+            name: item.label,
+            value: item.value.当月值,
+            year: item.value.年累计值,
+            up: item.value.比去年同期
+          })
         })
 
         this.topOption = {
@@ -201,7 +172,7 @@ export default {
           //   }
           // },
           legend: {
-            data:['利润总额','净利润'],
+            data: this.line1_x,
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -264,7 +235,7 @@ export default {
             {
               name:'利润总额',
               type:'bar',
-              data:[120],
+              data: [this.line1_y[0]],
               barWidth: 60,
               barGap: '100%',
               itemStyle: {
@@ -276,7 +247,7 @@ export default {
             {
               name:'净利润',
               type:'bar',
-              data:[200],
+              data:[this.line1_y[1]],
               barWidth: 60,
               barGap: '100%',
               // itemStyle: {
@@ -362,7 +333,7 @@ export default {
             {
               name:'营业利润',
               type:'bar',
-              data:[120],
+              data:[this.line2_y[0]],
               barWidth: 60,
               barGap: '100%',
               itemStyle: {
@@ -374,7 +345,7 @@ export default {
             {
               name:'营业外收入',
               type:'bar',
-              data:[200],
+              data:[this.line2_y[1]],
               barWidth: 60,
               barGap: '100%',
               // itemStyle: {
@@ -386,7 +357,7 @@ export default {
             {
               name:'营业外支出',
               type:'bar',
-              data:[200],
+              data:[this.line2_y[2]],
               barWidth: 60,
               barGap: '100%',
               // itemStyle: {
@@ -470,7 +441,7 @@ export default {
         display: flex;
         margin-top: 10px;
         justify-content: space-between;
-        margin-left: 20px;
+        // margin-left: 10px;
         .chart-manage {
           box-sizing: border-box;
           padding: 20px 0;

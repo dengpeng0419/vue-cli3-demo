@@ -23,63 +23,33 @@
       </el-select>
     </div>
     <div class="buttons">
-      <div class="button">月度趋势</div>
-      <div class="button">城市对比</div>
+      <router-link tag="div" class="button" to="/opening-cash">月度趋势</router-link>
+      <!-- <div class="button">城市对比</div> -->
     </div>
     <div class="top-frame">
       <div class="line-desc">
         <div class="left">资产总额(亿元)</div>
-        <div class="middle">123456</div>
+        <div class="middle">{{main}}</div>
         <div class="right">比去年同期:</div>
-        <div class="right-arrow arrow-up"></div>
-        <div class="right-num">30%</div>
+        <div class="right-arrow arrow-up" :class="{'arrow-down':mainValue<0}"></div>
+        <div class="right-num">{{mainValue}}%</div>
       </div>
       <div class="top-bottom-frame">
         <v-chart class="chart-top" :options="topOption"></v-chart>
         <!-- <v-chart class="chart-top" :options="bottomOption"></v-chart> -->
         <div class="row-manage">
-          <div class="chart-manage">
+          <div class="chart-manage" v-for="(item,index) in pie1" :key="index">
             <div class="chart-title">主营业务收入(电力产品)  亿元</div>
             <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
+            <div class="middle">{{item.value}}</div>
             <div class="chart-content">
               <div class="left">
                 <div class="name">年累计值</div>
-                <div class="value">99999</div>
+                <div class="value">{{item.year}}</div>
               </div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="chart-manage">
-            <div class="chart-title">主营业务收入(电力产品)  亿元</div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
-              </div>
-            </div>
-          </div>
-          <div class="chart-manage">
-            <div class="chart-title">主营业务收入(电力产品)  亿元</div>
-            <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
-            <div class="chart-content">
-              <div class="left">
-                <div class="name">年累计值</div>
-                <div class="value">99999</div>
-              </div>
-              <div class="right">
-                <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{item.up}}<span class="span-img arrow-up" :class="{'arrow-down':item.up<0}"></span></div>
               </div>
             </div>
           </div>
@@ -89,26 +59,26 @@
     <div class="top-frame">
       <div class="line-desc">
         <div class="left">主营业务成本</div>
-        <div class="middle">123456</div>
+        <div class="middle">{{cost}}</div>
         <div class="right">比去年同期:</div>
-        <div class="right-arrow arrow-up"></div>
-        <div class="right-num">30%</div>
+        <div class="right-arrow arrow-up" :class="{'arrow-down':costValue<0}"></div>
+        <div class="right-num">{{costValue}}%</div>
       </div>
       <div class="top-bottom-frame">
         <v-chart class="chart-bottom" :options="bottomOption"></v-chart>
         <div class="row-manage">
-          <div class="chart-manage">
+          <div class="chart-manage" v-for="(item,index) in pie2" :key="index">
             <div class="chart-title">主营业务成本(电力产品)  亿元</div>
             <div class="chart-desc">月度值</div>
-            <div class="middle">123456</div>
+            <div class="middle">{{item.value}}</div>
             <div class="chart-content">
               <div class="left">
                 <div class="name">年累计值</div>
-                <div class="value">99999</div>
+                <div class="value">{{item.year}}</div>
               </div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{item.up}}<span class="span-img arrow-up" :class="{'arrow-down':item.up<0}"></span></div>
               </div>
             </div>
           </div>
@@ -165,6 +135,16 @@ export default {
       companyValue: '本部',
       topOption: {},
       bottomOption: {},
+      main: 0,
+      cost: 0,
+      mainValue: 0,
+      costValue: 0,
+      mainUp: 0,
+      costUp: 0,
+      pie1: [],
+      pie1_x: [],
+      pie2: [],
+      pie2_x: []
     }
   },
   mounted() {
@@ -182,7 +162,7 @@ export default {
     },
     getPageData() {
       this.$ajax({
-        url: '/app/HumanResource/employee/increaseAndDecrease/structure',
+        url: '/app/financial/operating/structure',
         data: {
           deviceId: '1111',
           year: 2019,
@@ -190,30 +170,33 @@ export default {
           companyId: 0
         }
       }).then(res => {
-        const list = res.data.pieChartList || [];
-        if (list.length < 1) {
-          return;
-        } 
-        const age_data = list[0].content || [];
-        let pie_age = [];
-        let pie_age_x = [];
-        age_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_age.push(obj);
-          pie_age_x.push(item.label);
-        })
+        const data = res.data || {};
+        const overview = data.overview || [];
+        this.main = overview[0]&&overview[0].value ? overview[0].value.当月值 : 0;
+        this.mainValue = overview[0]&&overview[0].value ? overview[0].value.比去年同期 : 0;
+        this.cost = overview[1]&&overview[1].value ? overview[1].value.当月值 : 0;
+        this.costValue = overview[1]&&overview[1].value ? overview[1].value.比去年同期 : 0;
 
-        const wenhua_data = list[1].content || [];
-        let pie_wenhua = [];
-        let pie_wenhua_x = [];
-        wenhua_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_wenhua.push(obj);
-          pie_wenhua_x.push(item.label);
+        const detail = data.detail || [];
+        const detailValue1 = detail[0]&&detail[0].value ? detail[0].value : [];
+        const detailValue2 = detail[1]&&detail[1].value ? detail[1].value : [];
+        detailValue1.map((item) => {
+          this.pie1_x.push(item.label);
+          this.pie1.push({
+            name: item.label,
+            value: item.value.当月值,
+            year: item.value.年累计值,
+            up: item.value.比去年同期
+          })
+        })
+        detailValue2.map((item) => {
+          this.pie2_x.push(item.label);
+          this.pie2.push({
+            name: item.label,
+            value: item.value.当月值,
+            year: item.value.年累计值,
+            up: item.value.比去年同期
+          })
         })
 
         this.topOption = {
@@ -252,8 +235,8 @@ export default {
               }
             },
             data:[
-              {value:70, name:'主营业务收入'},
-              {value:30, name:'其他业务收入'},
+              {value:this.pie1[0].value+this.pie1[1].value, name:'主营业务收入'},
+              {value:this.pie1[2].value, name:'其他业务收入'},
             ]
           },
           {
@@ -266,9 +249,9 @@ export default {
             funnelAlign: 'left',
             max: 100,
             data:[
-              {value:20, name:'主营业务收入(电力产品)'},
-              {value:50, name:'主营业务收入(其他)'},
-              {value:30, name:'其他业务收入'}
+              {value:this.pie1[0].value, name:'主营业务收入(电力产品)'},
+              {value:this.pie1[1].value, name:'主营业务收入(其他)'},
+              {value:this.pie1[2].value, name:'其他业务收入'}
             ],
             itemStyle : {
               normal : {
@@ -315,9 +298,9 @@ export default {
             radius : '70%',
             center: ['50%', '50%'],
             data: [
-              {value:20, name:'主营业务收入(电力产品)'},
-              {value:50, name:'主营业务收入(其他)'},
-              {value:30, name:'其他业务收入'}
+              {value:this.pie2[0].value, name:'主营业务收入(电力产品)'},
+              {value:this.pie2[1].value, name:'主营业务收入(其他)'},
+              {value:this.pie2[2].value, name:'其他业务收入'}
             ],
             itemStyle: {
               emphasis: {

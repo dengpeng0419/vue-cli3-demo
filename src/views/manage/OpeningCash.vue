@@ -30,8 +30,8 @@
         <div class="year">2019</div>
       </div>
       <div class="types">
-        <div class="type choose-type">营业收入同期对比</div>
-        <div class="type">营业成本同期对比</div>
+        <div class="type" :class="{'choose-type': showA}" @click="show1">营业收入同期对比</div>
+        <div class="type" :class="{'choose-type': showB}" @click="show2">营业成本同期对比</div>
       </div>
     </div>
   </div>
@@ -54,13 +54,36 @@ export default {
       companyValue: '本部',
       topOption: {},
       bottomOption: {},
+      tline_x: [],
+      tline1: [],
+      tline2: [],
+      line_x: [],
+      line1: [],
+      line2: [],
+      line3: [],
+      line4: [],
+      line5: [],
+      line6: [],
+      showA: true,
+      showB: false
     }
   },
   mounted() {
     this.companyOptions = JSON.parse(sessionStorage.getItem('company'));
     this.getPageData();
+    this.getYearData();
   },
   methods: {
+    show1() {
+      this.showA = true;
+      this.showB = false;
+      this.showLine(this.line_x, this.lin1, this.line2, this.line3);
+    },
+    show2() {
+      this.showA = false;
+      this.showB = true;
+      this.showLine(this.line_x, this.lin4, this.line5, this.line6);
+    },
     chooseTime(timeValue) {
       this.timeValue = timeValue;
       this.getPageData();
@@ -70,45 +93,31 @@ export default {
       this.getPageData();
     },
     getPageData() {
-      // this.$ajax({
-      //   url: '/app/HumanResource/employee/trend',
-      //   data: {
-      //     deviceId: '1111',
-      //     startYear: 2018,
-      //     startMonth: 11,
-      //     endYear: 2019,
-      //     endMonth: 7,
-      //     companyIdList: this.companyValue
-      //   }
-      // }).then(res => {
-      //   const list = res.data.companyEmployeeTrendList || [];
-      //   if (list.length < 1) {
-      //     return;
-      //   } 
-        let muti_employee1 = [1,2,3,4,5,6,7];
-        let muti_employee2 = [1,3,3,1,5,6,9];
-        let muti_employee3 = [1,4,5,7,2,6,1];
-        let muti_employee4 = [];
-        let muti_employee5 = [];
-        let muti_employee_x = [];
-
-        // list[0].content.map((item) => {
-        //   muti_employee1.push(item.value || 0);
-        //   muti_employee_x.push(item.month + '月');
-        // })
-        // list[1] && list[1].content.map((item) => {
-        //   muti_employee2.push(item.value || 0);
-        // })
-        // list[2] && list[2].content.map((item) => {
-        //   muti_employee3.push(item.value || 0);
-        // })
-        // list[3] && list[3].content.map((item) => {
-        //   muti_employee4.push(item.value || 0);
-        // })
-        // list[4] && list[4].content.map((item) => {
-        //   muti_employee5.push(item.value || 0);
-        // })
-
+      this.$ajax({
+        url: '/app/financial/operating/trend',
+        data: {
+          deviceId: '1111',
+          startYear: 2018,
+          startMonth: 7,
+          endYear: 2019,
+          endMonth: 7,
+          companyId: 0
+        }
+      }).then(res => {
+        this.tline_x = [];
+        this.tline1 = [];
+        this.tline2 = [];
+        const data = res.data || {};
+        const operatingTrend = data.operatingTrend || [];
+        const detailValue1 = operatingTrend[0]&&operatingTrend[0].value ? operatingTrend[0].value : [];
+        const detailValue2 = operatingTrend[1]&&operatingTrend[1].value ? operatingTrend[1].value : [];
+        detailValue1.map((item) => {
+          this.tline_x.push(item.month);
+          this.tline1.push(item.value);
+        })
+        detailValue2.map((item) => {
+          this.tline2.push(item.value);
+        })
         this.topOption = {
           tooltip : {
               trigger: 'axis'
@@ -131,9 +140,9 @@ export default {
           calculable : true,
           xAxis: [
             {
-              type : 'category',
+              type: 'category',
               boundaryGap : false,
-              data : ['周一','周二','周三','周四','周五','周六','周日'],
+              data: this.tlin_x,
               axisLine: {
                 lineStyle: {
                   color: '#ccc'
@@ -180,7 +189,7 @@ export default {
               name:'流动资产',
               type:'line',
               stack: '总量',
-              data:[120, 132, 101, 134, 90, 230, 210],
+              data:this.tline1,
               itemStyle: {
                 borderColor: '#3589c4',
                 normal: {
@@ -195,7 +204,7 @@ export default {
               name:'非流动资产',
               type:'line',
               stack: '总量',
-              data:[220, 182, 191, 234, 290, 330, 310],
+              data:this.tline2,
               itemStyle: {
                 normal: {
                   color: '#3ebfdf',
@@ -208,8 +217,58 @@ export default {
             }
           ]
         };
+       });
+     },
+    getYearData() {
+      this.$ajax({
+        url: '/app/financial/operating/yearlyCompare',
+        data: {
+          deviceId: '1111',
+          companyId: 0
+        }
+      }).then(res => {
+        this.line_x = [];
+        this.line1 = [];
+        this.line2 = [];
+        this.line3 = [];
+        this.line4 = [];
+        this.line5 = [];
+        this.line6 = [];
+        const data = res.data || {};
+        const yearlyCompare = data.yearlyCompare || [];
+        const data1 = yearlyCompare[0] || {};
+        const data2 = yearlyCompare[1] || {};
+        const line1 = data1.value[0].value || [];
+        const line2 = data1.value[1].value || [];
+        const line3 = data1.value[2].value || [];
+        const line4 = data2.value[0].value || [];
+        const line5 = data2.value[1].value || [];
+        const line6 = data2.value[2].value || [];
+        line1.map((item) => {
+          this.line_x.push(item.month);
+          this.line1.push(item.value);
+        });
+        line2.map((item) => {
+          this.line2.push(item.value);
+        });
+        line3.map((item) => {
+          this.line3.push(item.value);
+        });
+        line4.map((item) => {
+          this.line4.push(item.value);
+        });
+        line5.map((item) => {
+          this.line5.push(item.value);
+        });
+        line6.map((item) => {
+          this.line6.push(item.value);
+        });
 
-        this.bottomOption = {
+        this.showLine(this.line_x, this.lin1, this.line2, this.line3);
+       });
+     },
+    showLine(x,line1,line2,line3){
+      this.bottomOption = {
           tooltip: {
             trigger: 'axis',
             textStyle: {
@@ -223,7 +282,7 @@ export default {
             containLabel: true
           },
           legend: {
-            data:['流动资产','非流动资产','流动资产','非流动资产','流动资产'],
+            data: ['2017','2018','2019'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -235,7 +294,7 @@ export default {
           xAxis: [{
             type: 'category',
             boundaryGap: false,
-            data: muti_employee_x,
+            data: x,
             axisLine: {
               lineStyle: {
                 color: '#bdd6ef'
@@ -275,45 +334,27 @@ export default {
           }],
           series: [
             {
-              name:'用工数量',
+              name:'2017',
               type:'line',
-              data: muti_employee1,
+              data: line1,
               itemStyle: {
                 color: '#efea3d',
                 borderColor: '#efea3d'
               },
             },
             {
-              name:'用工数量',
+              name:'2018',
               type:'line',
-              data: muti_employee2,
+              data: line2,
               itemStyle: {
                 color: '#efea3d',
                 borderColor: '#efea3d'
               },
             },
             {
-              name:'用工数量',
+              name:'2019',
               type:'line',
-              data: muti_employee3,
-              itemStyle: {
-                color: '#efea3d',
-                borderColor: '#efea3d'
-              },
-            },
-            {
-              name:'用工数量',
-              type:'line',
-              data: muti_employee4,
-              itemStyle: {
-                color: '#efea3d',
-                borderColor: '#efea3d'
-              },
-            },
-            {
-              name:'用工数量',
-              type:'line',
-              data: muti_employee5,
+              data: line3,
               itemStyle: {
                 color: '#efea3d',
                 borderColor: '#efea3d'
@@ -321,8 +362,7 @@ export default {
             }
           ]
         }
-    //   });
-     }
+    }
   }
 }
 </script>
