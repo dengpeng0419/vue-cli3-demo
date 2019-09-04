@@ -14,8 +14,8 @@
         </el-option>
       </el-select>
       <div class="years">
-        <div class="year choose-year">半年</div>
-        <div class="year">一年</div>
+        <div class="year">半年</div>
+        <div class="year choose-year">一年</div>
         <div class="year">三年</div>
       </div>
     </div>
@@ -57,51 +57,51 @@ export default {
       this.getPageData();
     },
     getPageData() {
-      // this.$ajax({
-      //   url: '/app/HumanResource/employee/trend',
-      //   data: {
-      //     deviceId: '1111',
-      //     startYear: 2018,
-      //     startMonth: 11,
-      //     endYear: 2019,
-      //     endMonth: 7,
-      //     companyIdList: this.companyValue
-      //   }
-      // }).then(res => {
-      //   const list = res.data.companyEmployeeTrendList || [];
-      //   if (list.length < 1) {
-      //     return;
-      //   } 
-        let muti_employee1 = [1,2,3,4,5,6,7];
-        let muti_employee2 = [1,3,3,1,5,6,9];
-        let muti_employee3 = [1,4,5,7,2,6,1];
-        let muti_employee4 = [];
-        let muti_employee5 = [];
-        let muti_employee_x = [];
+      this.$ajax({
+        url: '/app/financial/profit/trend',
+        data: {
+          deviceId: '111',
+          startYear: 2018,
+          startMonth: 7,
+          endYear: 2019,
+          endMonth: 7,
+          companyId: 0
+        }
+      }).then(res => {
+        const list = res.data.trend || [];
+        const data1 = list[0] ? list[0].value : [];
+        const data2 = list[1] ? list[1].value : [];
+        const data3 = list[2] ? list[2].value : [];
+        const data4 = list[3] ? list[3].value : [];
 
-        // list[0].content.map((item) => {
-        //   muti_employee1.push(item.value || 0);
-        //   muti_employee_x.push(item.month + '月');
-        // })
-        // list[1] && list[1].content.map((item) => {
-        //   muti_employee2.push(item.value || 0);
-        // })
-        // list[2] && list[2].content.map((item) => {
-        //   muti_employee3.push(item.value || 0);
-        // })
-        // list[3] && list[3].content.map((item) => {
-        //   muti_employee4.push(item.value || 0);
-        // })
-        // list[4] && list[4].content.map((item) => {
-        //   muti_employee5.push(item.value || 0);
-        // })
+        this.line1_x = [];
+        this.line1 = [];
+        this.line2 = [];
+        this.line3_x = [];
+        this.line3 = [];
+        this.line4 = [];
+
+        data1.map((item) => {
+          this.line1_x.push(item.month + '月');
+          this.line1.push(item.value);
+        });
+        data2.map((item) => {
+          this.line2.push(item.value);
+        });
+        data3.map((item) => {
+          this.line3_x.push(item.month + '月');
+          this.line3.push(item.value);
+        });
+        data4.map((item) => {
+          this.line4.push(item.value);
+        });
 
         this.topOption = {
           tooltip : {
               trigger: 'axis'
           },
           legend: {
-            data:['流动资产','非流动资产'],
+            data:['营业利润','营业外收支净额'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -118,9 +118,9 @@ export default {
           calculable : true,
           xAxis: [
             {
-              type : 'category',
+              type: 'category',
               boundaryGap : false,
-              data : ['周一','周二','周三','周四','周五','周六','周日'],
+              data: this.line3_x,
               axisLine: {
                 lineStyle: {
                   color: '#ccc'
@@ -164,10 +164,10 @@ export default {
           ],
           series: [
             {
-              name:'流动资产',
+              name:'营业利润',
               type:'line',
               stack: '总量',
-              data:[120, 132, 101, 134, 90, 230, 210],
+              data:this.line3,
               itemStyle: {
                 borderColor: '#3589c4',
                 normal: {
@@ -179,10 +179,10 @@ export default {
               }
             },
             {
-              name:'非流动资产',
+              name:'营业外收支净额',
               type:'line',
               stack: '总量',
-              data:[220, 182, 191, 234, 290, 330, 310],
+              data:this.line4,
               itemStyle: {
                 normal: {
                   color: '#3ebfdf',
@@ -202,7 +202,7 @@ export default {
           },
           calculable : true,
           legend: {
-            data:['资产总量','增长率'],
+            data:['营业利润','同比增长率'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -219,7 +219,7 @@ export default {
           xAxis: [
             {
               type : 'category',
-              data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+              data : this.line1_x,
               axisLine: {
                 lineStyle: {
                   color: '#ccc'
@@ -239,7 +239,7 @@ export default {
           yAxis: [
             {
               type : 'value',
-              name : '资产总量',
+              name : '营业利润',
               axisLine: {
                 show: false,
                 lineStyle: {
@@ -263,7 +263,7 @@ export default {
             },
             {
               type : 'value',
-              name : '增长率',
+              name : '同比增长率',
               axisLine: {
                 show: false,
                 lineStyle: {
@@ -290,7 +290,7 @@ export default {
             {
               name:'资产总量',
               type:'bar',
-              data:[2.0, 4.9, 67.0, 23.2, 25.6, 76.7, 35.6, 62.2, 32.6, 20.0, 6.4, 3.3],
+              data:this.line1,
               barWidth: 24,
               itemStyle: {
                 normal: {
@@ -302,7 +302,7 @@ export default {
               name:'增长率',
               type:'line',
               yAxisIndex: 1,
-              data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+              data:this.line2,
               itemStyle: {
                 normal: {
                   color: '#6aa129',
@@ -312,7 +312,7 @@ export default {
             }
           ]
         };
-    //   });
+       });
      }
   }
 }

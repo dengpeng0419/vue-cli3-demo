@@ -24,10 +24,10 @@
     </div>
     <div class="total-desc">
       <div class="left">资产总额(亿元)</div>
-      <div class="middle">123456</div>
+      <div class="middle">{{overview.当月值}}</div>
       <div class="right">比去年同期:</div>
-      <div class="right-arrow arrow-up"></div>
-      <div class="right-num">30%</div>
+      <div class="right-arrow arrow-up" :class="{'arrow-down':overview.比去年同期<0}"></div>
+      <div class="right-num">{{overview.比去年同期}}%</div>
       <div class="button"><router-link tag='span' to='economy-trend'>月度趋势</router-link></div>
     </div>
     <div class="top-frame">
@@ -39,10 +39,10 @@
           <div class="chart-manage">
             <div class="chart-content">
               <div class="chart-title">净利润  亿元</div>
-              <div class="middle">123456</div>
+              <div class="middle">{{line1.当月值}}</div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{line1.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':line1.比去年同期<0}"></span></div>
               </div>
             </div>
             <v-chart class="chart" :options="option1"></v-chart>
@@ -50,10 +50,10 @@
           <div class="chart-manage">
             <div class="chart-content">
               <div class="chart-title">研发支出  亿元</div>
-              <div class="middle">123456</div>
+              <div class="middle">{{line2.当月值}}</div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{line2.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':line2.比去年同期<0}"></span></div>
               </div>
             </div>
             <v-chart class="chart" :options="option2"></v-chart>
@@ -61,10 +61,10 @@
           <div class="chart-manage">
             <div class="chart-content">
               <div class="chart-title">财务费用  亿元</div>
-              <div class="middle">123456</div>
+              <div class="middle">{{line3.当月值}}</div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{line3.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':line3.比去年同期<0}"></span></div>
               </div>
             </div>
             <v-chart class="chart" :options="option3"></v-chart>
@@ -81,10 +81,10 @@
           <div class="chart-manage">
             <div class="chart-content">
               <div class="chart-title">资产总值  亿元</div>
-              <div class="middle">123456</div>
+              <div class="middle">{{parseInt(line4.期末值/100000000)}}</div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{line4.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':line4.比去年同期<0}"></span></div>
               </div>
             </div>
             <v-chart class="chart" :options="option4"></v-chart>
@@ -92,10 +92,10 @@
           <div class="chart-manage">
             <div class="chart-content">
               <div class="chart-title">负债总值  亿元</div>
-              <div class="middle">123456</div>
+              <div class="middle">{{parseInt(line5.期末值/100000000)}}</div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{line5.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':line5.比去年同期<0}"></span></div>
               </div>
             </div>
             <v-chart class="chart" :options="option5"></v-chart>
@@ -103,10 +103,10 @@
           <div class="chart-manage">
             <div class="chart-content">
               <div class="chart-title">所有者权益  亿元</div>
-              <div class="middle">123456</div>
+              <div class="middle">{{line6.期末值}}</div>
               <div class="right">
                 <div class="name">比去年同期</div>
-                <div class="value">99999<span class="span-img arrow-up"></span></div>
+                <div class="value">{{line6.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':line6.比去年同期<0}"></span></div>
               </div>
             </div>
             <v-chart class="chart" :options="option6"></v-chart>
@@ -139,6 +139,13 @@ export default {
       option4: {},
       option5: {},
       option6: {},
+      line1: {},
+      line2: {},
+      line3: {},
+      line4: {},
+      line5: {},
+      line6: {},
+      overview: {}
     }
   },
   mounted() {
@@ -155,29 +162,41 @@ export default {
       this.getPageData();
     },
     getPageData() {
-      // this.$ajax({
-      //   url: '/app/HumanResource/employee/increaseAndDecrease/structure',
-      //   data: {
-      //     deviceId: '1111',
-      //     year: 2019,
-      //     month: 7,
-      //     companyId: 0
-      //   }
-      // }).then(res => {
+      this.$ajax({
+        url: '/app/financial/eva/structure',
+        data: {
+          deviceId: '111',
+          year: 2019,
+          month: 7,
+          companyId: 0
+        }
+      }).then(res => {
+        const data = res.data || {};
+        const detail = data.detail || [];
+        const overview = data.overview || [];
+        this.overview = overview[0] ? overview[0].value : {};
+        const data1 = detail[0] ? detail[0].value : [];
+        const data2 = detail[1] ? detail[1].value : [];
+        this.line1 = data1[0] ? data1[0].value : {};
+        this.line2 = data1[1] ? data1[1].value : {};
+        this.line3 = data1[2] ? data1[2].value : {};
+        this.line4 = data2[0] ? data2[0].value : {};
+        this.line5 = data2[1] ? data2[1].value : {};
+        this.line6 = data2[2] ? data2[2].value : {};
 
-        this.option1 = this.getOption(400, 200);
-        this.option2 = this.getOption(300, 200);
-        this.option3 = this.getOption(100, 200);
-        this.option4 = this.getOption(200, 200);
-        this.option5 = this.getOption(500, 200);
-        this.option6 = this.getOption(800, 200);
+        this.option1 = this.getOption(this.line1.去年同期值, this.line1.当月值);
+        this.option2 = this.getOption(this.line2.去年同期值, this.line2.当月值);
+        this.option3 = this.getOption(this.line3.去年同期值, this.line3.当月值);
+        this.option4 = this.getOption(parseInt(this.line4.年初值/100000000), parseInt(this.line4.期末值/100000000), true);
+        this.option5 = this.getOption(parseInt(this.line5.年初值/100000000), parseInt(this.line5.期末值/100000000), true);
+        this.option6 = this.getOption(this.line6.年初值, this.line6.期末值, true);
         
-      // });
+      });
     },
-    getOption(data1, data2) {
+    getOption(data1, data2, flag) {
       return {
           legend: {
-            data:['2018年7月','2019年7月'],
+            data: flag ? ['年初值','期末值'] : ['去年同期值','当期值'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -233,7 +252,7 @@ export default {
           ],
           series: [
             {
-              name:'2018年7月',
+              name:flag ? '年初值' : '去年同期值',
               type:'bar',
               data:[data1],
               barWidth: 40,
@@ -245,7 +264,7 @@ export default {
               }
             },
             {
-              name:'2019年7月',
+              name:flag ? '期末值' : '当期值',
               type:'bar',
               data:[data2],
               barWidth: 40,

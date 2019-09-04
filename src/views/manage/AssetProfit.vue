@@ -32,33 +32,33 @@
             <div class="desc-top">资产收益率</div>
             <div class="desc-middle">
               <div class="right">当期值:</div>
-              <div class="middle">99.99%</div>
+              <div class="middle">{{data1.当月值}}</div>
             </div>
             <div class="desc-bottom">
               <p>同比:</p>
-              <div class="right-num">30%</div>
-              <div class="right-arrow arrow-up"></div>
+              <div class="right-num">{{data1.比去年同期}}%</div>
+              <div class="right-arrow arrow-up" :class="{'arrow-down':data1.比去年同期<0}"></div>
             </div>
           </div>
         </div>
         <div class="two">
-          <div class="desc-top">资产收益率</div>
+          <div class="desc-top">净利润</div>
           <div class="desc-bottom">
             <p>同比:</p>
-            <div class="right-num">30%</div>
-            <div class="right-arrow arrow-up"></div>
+            <div class="right-num">{{data2.比去年同期}}%</div>
+            <div class="right-arrow arrow-up" :class="{'arrow-down':data2.比去年同期<0}"></div>
             <div class="right-desc">当期值:</div>
-            <div class="right-num">9999</div>
+            <div class="right-num">{{data2.当月值}}</div>
           </div>
         </div>
         <div class="two">
           <div class="desc-top">所有者权益</div>
           <div class="desc-bottom">
             <p>同比:</p>
-            <div class="right-num">30%</div>
-            <div class="right-arrow arrow-up"></div>
+            <div class="right-num">{{data3.比去年同期}}%</div>
+            <div class="right-arrow arrow-up" :class="{'arrow-down':data3.比去年同期<0}"></div>
             <div class="right-desc">当期值:</div>
-            <div class="right-num">9999</div>
+            <div class="right-num">{{data3.当月值}}</div>
           </div>
         </div>
       </div>
@@ -69,15 +69,15 @@
             <div class="chart-manage">
               <div class="chart-content">
                 <div class="chart-desc">月度值</div>
-                <div class="middle">123456</div>
+                <div class="middle">{{data2.当月值}}</div>
                 <div class="chart-content-value">
                   <div class="left">
                     <div class="name">年累计值</div>
-                    <div class="name">年累计值</div>
+                    <div class="name">去年同期值</div>
                   </div>
                   <div class="right">
-                    <div class="value">99999</div>
-                    <div class="value">99999</div>
+                    <div class="value">{{data2.年累计值}}</div>
+                    <div class="value">{{data2.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':data2.比去年同期<0}"></span></div>
                   </div>
                 </div>
               </div>
@@ -91,19 +91,19 @@
             <div class="chart-manage">
               <div class="chart-content">
                 <div class="chart-desc">月度值</div>
-                <div class="middle">123456</div>
+                <div class="middle">{{data3.当月值}}</div>
                 <div class="chart-content-value">
                   <div class="left">
-                    <div class="name">年累计值</div>
-                    <div class="name">年累计值</div>
+                    <div class="name">年初值</div>
+                    <div class="name">去年同期值</div>
                   </div>
                   <div class="right">
-                    <div class="value">99999</div>
-                    <div class="value">99999</div>
+                    <div class="value">{{data3.年初值}}</div>
+                    <div class="value">{{data3.比去年同期}}%<span class="span-img arrow-up" :class="{'arrow-down':data3.比去年同期<0}"></span></div>
                   </div>
                 </div>
               </div>
-              <v-chart class="chart-top" :options="topOption"></v-chart>
+              <v-chart class="chart-top" :options="bottomOption"></v-chart>
             </div>
           </div>
         </div>
@@ -129,6 +129,9 @@ export default {
       companyValue: '本部',
       topOption: {},
       bottomOption: {},
+      data1: {},
+      data2: {},
+      data3: {},
     }
   },
   mounted() {
@@ -146,43 +149,22 @@ export default {
     },
     getPageData() {
       this.$ajax({
-        url: '/app/HumanResource/employee/increaseAndDecrease/structure',
+        url: '/app/financial/rateOfReturnOnEquity/structure',
         data: {
-          deviceId: '1111',
+          deviceId: '111',
           year: 2019,
           month: 7,
           companyId: 0
         }
       }).then(res => {
-        const list = res.data.pieChartList || [];
-        if (list.length < 1) {
-          return;
-        } 
-        const age_data = list[0].content || [];
-        let pie_age = [];
-        let pie_age_x = [];
-        age_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_age.push(obj);
-          pie_age_x.push(item.label);
-        })
-
-        const wenhua_data = list[1].content || [];
-        let pie_wenhua = [];
-        let pie_wenhua_x = [];
-        wenhua_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_wenhua.push(obj);
-          pie_wenhua_x.push(item.label);
-        })
+        const list = res.data.overview || [];
+        this.data1 = list[0] ? list[0].value : {};
+        this.data2 = list[1] ? list[1].value : {};
+        this.data3 = list[2] ? list[2].value : {};
 
         this.topOption = {
           legend: {
-            data:['利润总额','净利润'],
+            data:['去年同期值','当月值'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -243,9 +225,9 @@ export default {
           ],
           series: [
             {
-              name:'利润总额',
+              name:'去年同期值',
               type:'bar',
-              data:[120],
+              data:[this.data2.去年同期值],
               barWidth: 60,
               barGap: '100%',
               itemStyle: {
@@ -255,9 +237,9 @@ export default {
               }
             },
             {
-              name:'净利润',
+              name:'当月值',
               type:'bar',
-              data:[200],
+              data:[this.data2.当月值],
               barWidth: 60,
               barGap: '100%',
               // itemStyle: {
@@ -280,7 +262,7 @@ export default {
           //   }
           // },
           legend: {
-            data:['营业利润','营业外收入','营业外支出'],
+            data:['年初值','当月值'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -341,9 +323,9 @@ export default {
           ],
           series: [
             {
-              name:'营业利润',
+              name:'年初值',
               type:'bar',
-              data:[120],
+              data:[this.data3.年初值],
               barWidth: 60,
               barGap: '100%',
               itemStyle: {
@@ -353,21 +335,9 @@ export default {
               }
             },
             {
-              name:'营业外收入',
+              name:'当月值',
               type:'bar',
-              data:[200],
-              barWidth: 60,
-              barGap: '100%',
-              // itemStyle: {
-              //   normal: {
-              //     color: '#3589c4'
-              //   }
-              // }
-            },
-            {
-              name:'营业外支出',
-              type:'bar',
-              data:[200],
+              data:[this.data3.当月值],
               barWidth: 60,
               barGap: '100%',
               // itemStyle: {
@@ -507,6 +477,7 @@ export default {
                 color: #77bde1;
                 font-size: 36px;
                 margin-left: 50px;
+                text-align: right;
               }
             }
             .right {
@@ -517,6 +488,22 @@ export default {
                 color: #fff;
                 font-size: 36px;
                 margin-left: 50px;
+              }
+              .span-img {
+                display: inline-block;
+                margin-left: 10px;
+                width: 35px;
+                height: 33px;
+                background-repeat: no-repeat;
+              }
+              .arrow-up {
+                background: url(../../assets/img/manage_arrow.png);
+                background-size: 100% 100%;
+              }
+              .arrow-down {
+                background: url(../../assets/img/manage_arrow.png);
+                background-size: 100% 100%;
+                transform: rotate(180deg);
               }
             }
             .span-img {

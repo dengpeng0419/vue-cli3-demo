@@ -122,8 +122,9 @@ export default {
   name: 'ManageIndex',
   data() {
     return {
-      pageData: {},
-      banner: [],
+      pageData: {
+        banner: [],
+      },
       flueAsset: [],
       unflueAsset: [],
       label1: [],
