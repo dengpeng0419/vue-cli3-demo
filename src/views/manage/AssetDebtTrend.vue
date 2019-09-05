@@ -1,5 +1,5 @@
 <template>
-  <div class="profit-trend">
+  <div class="debt-trend">
     <div class="title-bar">
       <div style="position: absolute; top: 0; left: 45px;" @click="$router.go(-1)">
         <img src="../../assets/img/icon_back.png" width="21" height="36">
@@ -14,8 +14,8 @@
         </el-option>
       </el-select>
       <div class="years">
-        <div class="year choose-year">半年</div>
-        <div class="year">一年</div>
+        <div class="year">半年</div>
+        <div class="year choose-year">一年</div>
         <div class="year">三年</div>
       </div>
     </div>
@@ -51,11 +51,19 @@ export default {
       companyValue: '本部',
       topOption: {},
       bottomOption: {},
+      line_x: [],
+      line1: [],
+      line2: [],
+      line3: [],
+      line4: [],
+      line5: [],
+      line6: [],
     }
   },
   mounted() {
     this.companyOptions = JSON.parse(sessionStorage.getItem('company'));
     this.getPageData();
+    this.getYearData();
   },
   methods: {
     chooseTime(timeValue) {
@@ -67,139 +75,35 @@ export default {
       this.getPageData();
     },
     getPageData() {
-      // this.$ajax({
-      //   url: '/app/HumanResource/employee/trend',
-      //   data: {
-      //     deviceId: '1111',
-      //     startYear: 2018,
-      //     startMonth: 11,
-      //     endYear: 2019,
-      //     endMonth: 7,
-      //     companyIdList: this.companyValue
-      //   }
-      // }).then(res => {
-      //   const list = res.data.companyEmployeeTrendList || [];
-      //   if (list.length < 1) {
-      //     return;
-      //   } 
-        let muti_employee1 = [1,2,3,4,5,6,7];
-        let muti_employee2 = [1,3,3,1,5,6,9];
-        let muti_employee3 = [1,4,5,7,2,6,1];
-        let muti_employee4 = [];
-        let muti_employee5 = [];
-        let muti_employee_x = [];
-
-        // list[0].content.map((item) => {
-        //   muti_employee1.push(item.value || 0);
-        //   muti_employee_x.push(item.month + '月');
-        // })
-        // list[1] && list[1].content.map((item) => {
-        //   muti_employee2.push(item.value || 0);
-        // })
-        // list[2] && list[2].content.map((item) => {
-        //   muti_employee3.push(item.value || 0);
-        // })
-        // list[3] && list[3].content.map((item) => {
-        //   muti_employee4.push(item.value || 0);
-        // })
-        // list[4] && list[4].content.map((item) => {
-        //   muti_employee5.push(item.value || 0);
-        // })
-
-        this.topOption = {
-          tooltip: {
-            trigger: 'axis',
-            textStyle: {
-              align: 'left'
-            }
-          },
-          grid: {
-            left: '3%',
-            right: '3%',
-            bottom: '15%',
-            containLabel: true
-          },
-          legend: {
-            data:['2017','2018','2019'],
-            x: 'center',
-            y: 'bottom',
-            padding: 15,
-            textStyle: {
-              color: '#77bde1'
-            }
-          },
-          calculable : true,
-          xAxis: [{
-            type: 'category',
-            boundaryGap: false,
-            data: muti_employee_x,
-            axisLine: {
-              lineStyle: {
-                color: '#bdd6ef'
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            axisLabel: {
-              textStyle: {
-                color: '#77bde1',
-                fontSize: 12
-              }
-            }
-          }],
-          yAxis: [{
-            axisLine: {
-              show: false,
-              lineStyle: {
-                color: '#bdd6ef'
-              }
-            },
-            axisTick: {
-              show: false
-            },
-            splitLine: {
-              lineStyle: {
-                color: '#50586c'
-              }
-            },
-            axisLabel: {
-              textStyle: {
-                color: '#77bde1',
-                fontSize: 12
-              }
-            }
-          }],
-          series: [
-            {
-              name:'2017',
-              type:'line',
-              data: muti_employee1,
-              itemStyle: {
-                color: '#6aa129',
-                borderColor: '#6aa129'
-              },
-            },
-            {
-              name:'2018',
-              type:'line',
-              data: muti_employee2,
-              itemStyle: {
-                color: '#17a5c4',
-                borderColor: '#17a5c4'
-              },
-            },
-            {
-              name:'2019',
-              type:'line',
-              data: muti_employee3,
-              itemStyle: {
-                color: '#efea3d',
-                borderColor: '#efea3d'
-              },
-            },
-          ]
-        };
+      this.$ajax({
+        url: '/app/financial/liabilityAssetRate/trend',
+        data: {
+          deviceId: '111',
+          startYear: 2018,
+          startMonth: 7,
+          endYear: 2019,
+          endMonth: 7,
+          companyId: 0
+        }
+      }).then(res => {
+        const list = res.data.trend || [];
+        const data1 = list[0] ? list[0].value : [];
+        const data2 = list[1] ? list[1].value : [];
+        const data3 = list[2] ? list[2].value : [];
+        let line_x = [];
+        let line1 = [];
+        let line2 = [];
+        let line3 = [];
+        data1.map((item) => {
+          line_x.push(item.month + '月');
+          line1.push(item.value);
+        });
+        data2.map((item) => {
+          line2.push(item.value);
+        });
+        data3.map((item) => {
+          line3.push(item.value);
+        });
 
         this.bottomOption = {
           tooltip : {
@@ -207,7 +111,7 @@ export default {
           },
           calculable : true,
           legend: {
-            data:['净利润','净利润收益率','所有者权益'],
+            data:['总负债','总资产','资产负债率'],
             x: 'center',
             y: 'bottom',
             padding: 15,
@@ -224,7 +128,7 @@ export default {
           xAxis: [
             {
               type : 'category',
-              data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+              data : line_x,
               axisLine: {
                 lineStyle: {
                   color: '#ccc'
@@ -293,9 +197,9 @@ export default {
           ],
           series: [
             {
-              name:'净利润',
+              name:'总负债',
               type:'bar',
-              data:[2.0, 4.9, 67.0, 23.2, 25.6, 76.7, 35.6, 62.2, 32.6, 20.0, 6.4, 3.3],
+              data:line1,
               barWidth: 24,
               itemStyle: {
                 normal: {
@@ -304,9 +208,9 @@ export default {
               }
             },
             {
-              name:'净利润收益率',
+              name:'总资产',
               type:'bar',
-              data:[2.0, 4.9, 67.0, 23.2, 25.6, 76.7, 35.6, 62.2, 32.6, 20.0, 6.4, 3.3],
+              data:line2,
               barWidth: 24,
               // itemStyle: {
               //   normal: {
@@ -315,10 +219,10 @@ export default {
               // }
             },
             {
-              name:'所有者权益',
+              name:'资产负债率',
               type:'line',
               yAxisIndex: 1,
-              data:[2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2],
+              data:line3,
               itemStyle: {
                 normal: {
                   color: '#6aa129',
@@ -328,14 +232,145 @@ export default {
             }
           ]
         };
-    //   });
-     }
+      });
+     },
+     getYearData() {
+      this.$ajax({
+        url: '/app/financial/rateOfReturnOnEquity/yearlyCompare',
+        data: {
+          deviceId: '111',
+          companyId: 0
+        }
+      }).then(res => {
+        this.line_x = [];
+        this.line1 = [];
+        this.line2 = [];
+        this.line3 = [];
+        this.line4 = [];
+        this.line5 = [];
+        this.line6 = [];
+        const data = res.data || {};
+        const yearlyCompare = data.yearlyCompare || [];
+        const data1 = yearlyCompare[0] || {};
+        const line1 = data1.value[0].value || [];
+        const line2 = data1.value[1].value || [];
+        const line3 = data1.value[2].value || [];
+        line1.map((item) => {
+          this.line_x.push(item.month);
+          this.line1.push(item.value);
+        });
+        line2.map((item) => {
+          this.line2.push(item.value);
+        });
+        line3.map((item) => {
+          this.line3.push(item.value);
+        });
+
+        this.showLine(this.line_x, this.lin1, this.line2, this.line3);
+       });
+     },
+    showLine(x,line1,line2,line3){
+      this.topOption = {
+          tooltip: {
+            trigger: 'axis',
+            textStyle: {
+              align: 'left'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '3%',
+            bottom: '15%',
+            containLabel: true
+          },
+          legend: {
+            data: ['2017','2018','2019'],
+            x: 'center',
+            y: 'bottom',
+            padding: 15,
+            textStyle: {
+              color: '#77bde1'
+            }
+          },
+          calculable : true,
+          xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            data: x,
+            axisLine: {
+              lineStyle: {
+                color: '#bdd6ef'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#77bde1',
+                fontSize: 12
+              }
+            }
+          }],
+          yAxis: [{
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: '#bdd6ef'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              lineStyle: {
+                color: '#50586c'
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#77bde1',
+                fontSize: 12
+              }
+            }
+          }],
+          series: [
+            {
+              name:'2017',
+              type:'line',
+              data: line1,
+              itemStyle: {
+                color: '#efea3d',
+                borderColor: '#efea3d'
+              },
+            },
+            {
+              name:'2018',
+              type:'line',
+              data: line2,
+              itemStyle: {
+                color: '#efea3d',
+                borderColor: '#efea3d'
+              },
+            },
+            {
+              name:'2019',
+              type:'line',
+              data: line3,
+              itemStyle: {
+                color: '#efea3d',
+                borderColor: '#efea3d'
+              },
+            }
+          ]
+        }
+    }
   }
 }
 </script>
 
 <style lang="scss">
-  .profit-trend {
+  .debt-trend {
     width: 100%;
     min-height: 100vh;
     .title-bar {

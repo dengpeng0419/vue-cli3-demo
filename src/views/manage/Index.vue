@@ -41,7 +41,7 @@
     </div>
     <div class="bottom-frame">
       <div class="left-frame">
-        <router-link to="/opening-cash" class="chart-jump"></router-link>
+        <router-link to="/manage-cost" class="chart-jump"></router-link>
         <div class="left-top-frame">
           <div class="left-frame-title">主营业务收入\成本</div>
           <div class="row-manage" v-if="label1&&label1.length>0">
@@ -76,7 +76,7 @@
           </div>
         </div>
         <div class="left-bottom-frame">
-          <!-- <router-link to="/asset-structure" class="chart-jump"></router-link> -->
+          <router-link to="/manage-profit" class="chart-jump"></router-link>
           <div class="left-bottom-title">利润总额</div>
           <div class="left-bottom-detail">
             <div class="names">
@@ -526,6 +526,7 @@ export default {
           padding-top: 25px;
           padding-left: 18px;
           padding-right: 25px;
+          position: relative;
           .chart-jump {
             position: absolute;
             top: 0;

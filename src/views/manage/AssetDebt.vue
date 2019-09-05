@@ -22,9 +22,9 @@
         </el-option>
       </el-select>
     </div>
-    <!-- <div class="buttons">
+    <div class="buttons">
       <div class="button"><router-link tag='span' to='asset-debt-trend'>月度趋势</router-link></div>
-    </div> -->
+    </div>
     <div class="content-frame">
       <div class="left-frame">
         <div class="one">

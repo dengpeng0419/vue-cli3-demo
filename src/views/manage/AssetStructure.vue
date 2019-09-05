@@ -22,6 +22,10 @@
         </el-option>
       </el-select>
     </div>
+    <div class="buttons">
+      <div class="button"><router-link tag='span' to='/asset-overview'>资产明细</router-link></div>
+      <div class="button"><router-link tag='span' to='/asset-trend'>月度趋势</router-link></div>
+    </div>
     <div class="total-desc">
       <div class="left">资产总额(亿元)</div>
       <div class="middle">{{banner}}</div>
@@ -282,6 +286,27 @@ export default {
         position: absolute;
         right: 160px;
         top: 0;
+      }
+    }
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      padding-right: 100px;
+      box-sizing: border-box;
+      margin-top: 10px;
+      .button {
+        margin-left: 40px;
+        width: 200px;
+        height: 60px;
+        line-height: 60px;
+        color: #fff;
+        background-color: #77bde1;
+        background-image: url(../../assets/img/manage_button.png);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+        font-size: 36px;
       }
     }
     .total-desc {

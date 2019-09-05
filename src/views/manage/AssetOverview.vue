@@ -25,16 +25,16 @@
     <div class="overview">
       <div class="column">
         <div class="chart-frame-top"></div>
-        <v-chart class="chart-top" :options="pieOption"></v-chart>
+        <v-chart class="chart-top" :options="pieOption" @click="change"></v-chart>
       </div>
       <div class="right-view">
         <div class="title-frame">
-          <div class="title">非流动资产</div>
+          <div class="title">{{name}}</div>
         </div>
         <div class="list">
-          <div class="line" v-for="(item, index) in [1,2,3,4,5]" :key="index">
-            <div class="name">123</div>
-            <div class="value">11111</div>
+          <div class="line" v-for="(item, index) in asset" :key="index">
+            <div class="name">{{item.label}}</div>
+            <div class="value">{{item.value}}</div>
           </div>
         </div>
       </div>
@@ -59,6 +59,10 @@ export default {
       companyValue: '本部',
       pieOption: {},
       wenhuaOption: {},
+      asset: [],
+      flueAsset: [],
+      unflueAsset: [],
+      name: '流动资产'
     }
   },
   mounted() {
@@ -66,6 +70,16 @@ export default {
     this.getPageData();
   },
   methods: {
+    change(event) {
+      console.log(event);
+      if (event.dataIndex === 0) {
+        this.asset = this.flueAsset;
+        this.name = '流动资产';
+      } else {
+        this.asset = this.unflueAsset;
+        this.name = '非流动资产';
+      }
+    },
     chooseTime(timeValue) {
       this.timeValue = timeValue;
       this.getPageData();
@@ -76,39 +90,28 @@ export default {
     },
     getPageData() {
       this.$ajax({
-        url: '/app/HumanResource/employee/increaseAndDecrease/structure',
+        url: '/app/financial/asset/structure',
         data: {
-          deviceId: '1111',
+          deviceId: '111',
           year: 2019,
           month: 7,
           companyId: 0
         }
       }).then(res => {
-        const list = res.data.pieChartList || [];
-        if (list.length < 1) {
-          return;
-        } 
-        const age_data = list[0].content || [];
-        let pie_age = [];
-        let pie_age_x = [];
-        age_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_age.push(obj);
-          pie_age_x.push(item.label);
-        })
+        const list = res.data.assetStructure || [];
+        let pie_x = [];
+        let pie_y = [];
+        pie_x = ['流动资产', '非流动资产'];
+        pie_y = [list[0].value, list[2].value];
+        // list.map((item) => {
+        //   pie_x.push(item.label);
+        //   pie_y.push(item.value);
+        // })
 
-        const wenhua_data = list[1].content || [];
-        let pie_wenhua = [];
-        let pie_wenhua_x = [];
-        wenhua_data.map((item) => {
-          const obj = {};
-          obj.name = item.label;
-          obj.value = item.value;
-          pie_wenhua.push(obj);
-          pie_wenhua_x.push(item.label);
-        })
+        const assets = res.data.assetStructureDetail || [];
+        this.flueAsset = assets[0] ? assets[0].value : [];
+        this.unflueAsset = assets[1] ? assets[1].value : [];
+        this.asset = this.flueAsset;
 
         this.pieOption = {
           tooltip: {
@@ -136,11 +139,11 @@ export default {
           //   }
           // },
           series : [{
-            name: '非流动资产',
+            name: '',
             type: 'pie',
             radius : '80%',
             center: ['50%', '50%'],
-            data: pie_age,
+            data: pie_y,
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -148,11 +151,11 @@ export default {
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
               },
               normal:{
-                // color:function(params) {
-                // //自定义颜色
-                // var colorList = ['#df4e3e', '#e98e12', '#7876b6', '#17a5c4', ];
-                //   return colorList[params.dataIndex]
-                // },
+                color:function(params) {
+                //自定义颜色
+                var colorList = ['#7876b6', '#17a5c4', '#df4e3e', '#e98e12'];
+                  return colorList[params.dataIndex]
+                },
                 label: {
                   show: false
                 },
@@ -261,8 +264,9 @@ export default {
         .list {
           display: flex;
           flex-direction: column;
-          min-height: 1200px;
+          height: 1200px;
           width: 1000px;
+          overflow-y: scroll;
           color: #fff;
           font-size: 40px;
           .line{
